@@ -1,0 +1,15 @@
+head {
+  background-color: #444040;
+  color: #333;
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #2b2323;
+  margin: 0;
+  padding: 0;
+}
