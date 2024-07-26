@@ -26,7 +26,7 @@ window.onclick = function (event) {
   }
 };
 
-// Handle the form submission
+//* Handle the form submission
 document.getElementById("email-form").onsubmit = function (event) {
   event.preventDefault(); // Prevent the default form submission
 
@@ -61,24 +61,82 @@ document.getElementById("email-form").onsubmit = function (event) {
   modal.style.display = "none";
 };
 
-// Copy email to clipboard
-// Copy email to clipboard
-document.getElementById("copy-email-button").onclick = function (event) {
-  event.preventDefault(); // Prevent form submission
-  var email = "PNaif4735@gmail.com"; // Replace with your actual email
-  var textarea = document.createElement("textarea");
-  textarea.value = email;
-  document.body.appendChild(textarea);
-  textarea.select();
-  document.execCommand("copy");
-  document.body.removeChild(textarea);
+//* Copy email to clipboard
+document.addEventListener("DOMContentLoaded", function () {
+  var copyButton = document.getElementById("copy-email-button");
 
-  // Show the tooltip
-  var tooltip = document.getElementById("tooltip");
-  tooltip.classList.add("show");
+  if (copyButton) {
+    copyButton.addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent form submission
+      var email = "PNaif4735@gmail.com"; // Replace with your actual email
+      var textarea = document.createElement("textarea");
+      textarea.value = email;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
 
-  // Hide the tooltip after 2 seconds
-  setTimeout(function () {
-    tooltip.classList.remove("show");
-  }, 2000);
-};
+      // Change the button text and color
+      var originalText = copyButton.innerText;
+      copyButton.innerText = "Email copied!";
+      copyButton.style.backgroundColor = "#380201"; // Change button color to green
+      copyButton.style.color = "white"; // Ensure text color is white
+
+      // Revert the button text and color after 2 seconds
+      setTimeout(function () {
+        copyButton.innerText = originalText;
+        copyButton.style.backgroundColor = "#333"; // Revert button color to original
+        copyButton.style.color = "white"; // Revert text color to original
+      }, 2000);
+    });
+  } else {
+    console.log("Copy button not found");
+  }
+});
+
+//* Interactive Canvas
+document.addEventListener("DOMContentLoaded", function () {
+  var mainPlanet = document.querySelector(".main-planet");
+  var mediumPlanet = document.querySelector(".medium-planet");
+  var smallPlanet = document.querySelector(".small-planet");
+
+  var mainAngle = 0;
+  var mediumAngle = 0;
+  var smallAngle = 0;
+  var mouseX = window.innerWidth / 2;
+  var mouseY = window.innerHeight / 2;
+  var centerX = window.innerWidth / 2;
+  var centerY = window.innerHeight / 2;
+
+  // Function to move the planets based on mouse movement
+  function movePlanets(event) {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+  }
+
+  // Function to update the transformation of the planets
+  function updateTransformations() {
+    var offsetX = (mouseX - centerX) / 30;
+    var offsetY = (mouseY - centerY) / 30;
+
+    mainAngle += 0.5; // Control the speed of rotation for the main planet
+    mediumAngle += 1; // Different speed for medium planet
+    smallAngle += 1.5; // Different speed for small planet
+
+    mainPlanet.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${mainAngle}deg)`;
+    mediumPlanet.style.transform = `translate(${offsetX * 1.5}px, ${
+      offsetY * 1.5
+    }px) rotate(${mediumAngle}deg)`;
+    smallPlanet.style.transform = `translate(${offsetX * 2}px, ${
+      offsetY * 2
+    }px) rotate(${smallAngle}deg)`;
+
+    requestAnimationFrame(updateTransformations);
+  }
+
+  // Add mousemove event listener to move planets
+  window.addEventListener("mousemove", movePlanets);
+
+  // Start the animation
+  requestAnimationFrame(updateTransformations);
+});
