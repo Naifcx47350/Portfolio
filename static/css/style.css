@@ -1,4 +1,4 @@
-/* main color pallet
+/*** main color pallet
 
 #171717
 #444444
@@ -10,7 +10,7 @@
 
 */
 
-/* universal settings */
+/*** universal settings */
 
 * {
   margin: 0;
@@ -18,28 +18,34 @@
   box-sizing: border-box;
 }
 
-/* Body */
+/** Body */
 
 body {
   font-family: Arial, sans-serif;
   background-color: #171717;
   overflow-x: hidden;
+  font-size: 1rem; /** Base font size */
 }
 
-/* Header */
+/** Header */
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  text-align: center;
+  padding: 0.618rem 1.25rem; /** Applying the golden ratio */
   background-color: #171717;
   color: #ededed;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 .logo img {
-  width: 70px;
-  height: 70px;
+  width: 4.375rem; /** 70px */
+  height: 4.375rem; /** 70px */
 }
 
 nav ul {
@@ -48,46 +54,50 @@ nav ul {
 }
 
 nav ul li {
-  margin-left: 20px;
+  margin-left: 1rem; /** Adjusted using golden ratio */
 }
 
 nav ul li a {
   text-decoration: none;
   color: #ededed;
-  font-size: 18px;
+  font-size: 1.125rem; /** 18px */
 }
 
 nav ul li a:hover {
   text-decoration: underline;
 }
 
-/* Sections settings */
+/** Sections settings */
 
 section {
-  padding: 60px 20px;
+  padding: 3.75rem 1rem;
+  margin-top: 2rem;
 }
 
 #about,
 #projects {
-  margin-top: 100px; /* Add this to prevent overlap with the fixed header */
-  color: #ededed;
+  margin-top: 6.25rem; /** 100px */
+  margin-top: 1rem;
 }
 
-/* Home section */
+/** Home section */
 
 #main {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 100vh;
-  padding: 0 50px;
+  padding: 0 3.125rem; /** 50px */
   color: #ededed;
+  margin-top: 1rem;
 }
 
 .main-content {
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-top: 6.25rem;
+  margin-bottom: 6.25rem;
 }
 
 .left-section {
@@ -95,7 +105,7 @@ section {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 20px;
+  padding: 1rem; /** Adjusted using golden ratio */
 }
 
 .right-section {
@@ -106,11 +116,11 @@ section {
   position: relative;
 }
 
-/* Animation CSS */
+/** Animation CSS */
 .animation {
   position: relative;
-  width: 640px;
-  height: 800px;
+  width: 40rem; /** 640px */
+  height: 50rem; /** 800px */
 }
 
 .main-planet,
@@ -127,10 +137,10 @@ section {
 .small-planet::before {
   content: "";
   position: absolute;
-  top: -0.5px;
-  left: -0.5px;
-  right: -0.5px;
-  bottom: -0.5px;
+  top: -0.03125rem; /** -0.5px */
+  left: -0.03125rem; /** -0.5px */
+  right: -0.03125rem; /** -0.5px */
+  bottom: -0.03125rem; /** -0.5px */
   background: linear-gradient(
     45deg,
     #380201,
@@ -143,36 +153,36 @@ section {
   animation: gradient-animation 8s ease infinite;
   border-radius: 50%;
   z-index: -1;
-  mask: radial-gradient(circle, transparent 69%, rgb(229, 194, 194) 61%);
+  mask: radial-gradient(circle, transparent 70%, rgb(229, 194, 194) 61%);
 }
 
 .main-planet {
   position: absolute;
-  left: 128px;
-  top: 280px;
-  width: 320px;
-  height: 320px;
+  left: 8rem; /** 128px */
+  top: 17.5rem; /** 280px */
+  width: 20rem; /** 320px */
+  height: 20rem; /** 320px */
 }
 
 .medium-planet {
-  width: 80px;
-  height: 80px;
+  width: 5rem; /** 80px */
+  height: 5rem; /** 80px */
 }
 
 .small-planet {
-  width: 40px;
-  height: 40px;
+  width: 2.5rem; /** 40px */
+  height: 2.5rem; /** 40px */
 }
 
 .rotate-medium {
   position: absolute;
-  top: 25px;
+  top: 1.5625rem; /** 25px */
   right: 0;
 }
 
 .rotate-small {
   position: absolute;
-  left: 65px;
+  left: 4.0625rem; /** 65px */
   top: 0;
 }
 
@@ -220,33 +230,208 @@ section {
   }
 }
 
-/* About section */
+/** Media Queries */
+@media only screen and (max-width: 768px) {
+  #main {
+    flex-direction: column;
+    padding: 0 1.25rem; /** Adjusted using golden ratio */
+  }
 
-/* Projects section */
+  .main-content {
+    flex-direction: column;
+  }
 
-/* Footer */
+  .left-section {
+    padding: 0.625rem; /** Adjusted using golden ratio */
+    text-align: center;
+  }
+
+  .right-section {
+    margin-top: 2rem; /** Adjusted using golden ratio */
+  }
+
+  .left-section h1 {
+    font-size: 2em;
+  }
+
+  .left-section h3 {
+    font-size: 1em;
+  }
+
+  .left-section p {
+    font-size: 0.75em;
+  }
+
+  .animation {
+    width: 80%;
+    height: auto;
+  }
+}
+
+/** About section */
+
+#about {
+  padding: 3rem 1.25rem; /* 48px 20px */
+  color: #ededed;
+  text-align: center;
+}
+
+#about h1 {
+  font-size: 2.25rem; /* 36px */
+  margin-bottom: 1rem; /* 16px */
+}
+
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-title {
+  font-size: 2.25rem; /* 36px */
+  margin-bottom: 1rem; /* 16px */
+}
+
+.about-content p {
+  font-size: 1rem; /* 16px */
+  line-height: 1.6;
+  margin-bottom: 1rem; /* 16px */
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+  .about-title {
+    font-size: 1.5rem; /* 24px */
+  }
+
+  .about-content p {
+    font-size: 0.875rem; /* 14px */
+  }
+}
+
+/** Projects section */
+
+/* Projects Section */
+#projects {
+  padding: 3rem 1.25rem; /* 48px 20px */
+  background-color: #171717;
+  color: #ededed;
+  text-align: center;
+}
+
+.projects-grid-container {
+  width: 100%; /* Ensure it uses the full width of the parent */
+  max-width: 1400px; /* Set your desired maximum width */
+  margin: 0 auto; /* Center the container */
+}
+
+.projects-grid {
+  display: flex;
+  flex-wrap: wrap;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  justify-content: center;
+  gap: 1.25rem; /* 20px */
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.project-item {
+  background-color: #444444;
+  border-radius: 0.5rem; /* 8px */
+  padding: 1rem; /* 16px */
+  transition: transform 0.3s, box-shadow 0.3s;
+  flex: 0 1 250px; /* Basis 250px, shrink and grow as needed */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.default-animation {
+  width: 100%;
+  height: 200px; /* Adjust as needed */
+  background: linear-gradient(
+    45deg,
+    #380201,
+    #a91d3a,
+    #ededed,
+    #6eacda,
+    #03346e
+  );
+  background-size: 400% 400%;
+  animation: gradient-animation 8s ease infinite;
+  border-radius: 0.5rem; /* 8px */
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.project-item:hover {
+  transform: translateY(-0.5rem); /* -8px */
+  box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.2); /* 10px 20px */
+}
+
+.project-item img {
+  width: 100%;
+  border-radius: 0.5rem; /* 8px */
+}
+
+.project-item h3 {
+  font-size: 1.25rem; /* 20px */
+  margin: 1rem 0 0.5rem; /* 16px 0 8px */
+}
+
+.project-item p {
+  font-size: 1rem; /* 16px */
+  color: #ffffff90;
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-item h3 {
+    font-size: 1rem; /* 16px */
+  }
+
+  .project-item p {
+    font-size: 0.875rem; /* 14px */
+  }
+}
+
+/** Footer */
 footer {
   text-align: center;
-  padding: 50px 20px;
+  padding: 3.125rem 1.25rem; /** 50px 20px */
   background-color: #171717;
   color: #ededed;
 }
 
 .footer-message h1 {
-  font-size: 36px;
+  font-size: 2.25rem; /** 36px */
 }
 
 .social-icons {
-  margin: 20px 0;
+  margin: 1.25rem 0; /** 20px */
 }
 
 .social-icons a {
-  margin: 0 15px;
+  margin: 0 0.9375rem; /** 15px */
 }
 
 .social-icons img {
-  width: 40px;
-  height: 40px;
+  width: 2.5rem; /** 40px */
+  height: 2.5rem; /** 40px */
   transition: transform 0.3s;
 }
 
@@ -263,17 +448,18 @@ footer {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: #171717;
-  padding-top: 60px;
+  background-color: #ffffff00;
+  padding-top: 3.75rem; /** 60px */
 }
 
 .popup-content {
-  background-color: #ededed;
+  background-color: #ededed42;
+  backdrop-filter: blur(10px);
   margin: 5% auto;
-  padding: 20px;
+  padding: 1.25rem; /** 20px */
   border: 1px solid #444444;
   width: 80%;
-  max-width: 500px;
+  max-width: 31.25rem; /** 500px */
   text-align: left;
 }
 
@@ -285,17 +471,17 @@ footer {
 
 .popup-content label {
   display: block;
-  margin: 10px 0 5px;
+  margin: 0.625rem 0 0.3125rem; /** 10px 0 5px */
   color: #171717;
 }
 
 .popup-content input,
 .popup-content textarea {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: 0.625rem; /** 10px */
+  margin-bottom: 0.625rem; /** 10px */
   border: 1px solid #ededed;
-  border-radius: 4px;
+  border-radius: 0.25rem; /** 4px */
 }
 
 .button-group {
@@ -306,24 +492,24 @@ footer {
 
 .button-group .small-button {
   width: 30%;
-  padding: 8px;
+  padding: 0.5rem; /** 8px */
   background-color: #171717;
   color: #ededed;
   border: none;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: 0.25rem; /** 4px */
+  font-size: 0.875rem; /** 14px */
   cursor: pointer;
   box-sizing: border-box;
 }
 
 .button-group button {
   width: 48%;
-  padding: 10px;
+  padding: 0.625rem; /** 10px */
   background-color: #171717;
   color: #ededed;
   border: none;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: 0.25rem; /** 4px */
+  font-size: 0.875rem; /** 14px */
   cursor: pointer;
   box-sizing: border-box;
 }
@@ -339,24 +525,22 @@ footer {
 .copy-message {
   display: none;
   color: #da0037;
-  margin-top: 10px;
+  margin-top: 0.625rem; /** 10px */
   text-align: center;
 }
 
 .popup-content textarea {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: 0.625rem; /** 10px */
+  margin-bottom: 0.625rem; /** 10px */
   border: 1px solid #ededed;
-  border-radius: 4px;
-  resize: vertical; /* Allow only vertical resizing */
-  max-height: 300px; /* Set a maximum height to prevent overflow */
+  border-radius: 0.25rem; /** 4px */
 }
 
 .close {
   color: #444444;
   float: right;
-  font-size: 28px;
+  font-size: 1.75rem; /** 28px */
   font-weight: bold;
 }
 
@@ -368,14 +552,32 @@ footer {
 }
 
 .footer-info {
-  margin-top: 20px;
+  margin-top: 1.25rem; /** 20px */
 }
 
 .footer-info img {
-  width: 50px;
-  height: 50px;
+  width: 3.125rem; /** 50px */
+  height: 3.125rem; /** 50px */
 }
 
 .footer-info p {
-  margin: 10px 0 0;
+  margin: 0.625rem 0 0; /** 10px 0 0 */
+}
+
+/** Responsive Adjustments */
+@media only screen and (max-width: 768px) {
+  .popup-content {
+    width: 90%;
+    padding: 1rem; /** Adjusted using golden ratio */
+  }
+
+  .button-group .small-button,
+  .button-group button {
+    font-size: 0.75rem; /** Adjusted using golden ratio */
+    padding: 0.5rem; /** Adjusted using golden ratio */
+  }
+
+  .close {
+    font-size: 1.5rem; /** Adjusted using golden ratio */
+  }
 }

@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Change the button text and color
       var originalText = copyButton.innerText;
       copyButton.innerText = "Email copied!";
-      copyButton.style.backgroundColor = "#380201"; // Change button color to green
+      copyButton.style.backgroundColor = "#6eacda"; // Change button color to green
       copyButton.style.color = "white"; // Ensure text color is white
 
       // Revert the button text and color after 2 seconds
