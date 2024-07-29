@@ -108,20 +108,18 @@ document.addEventListener("DOMContentLoaded", function () {
   var centerX = window.innerWidth / 2;
   var centerY = window.innerHeight / 2;
 
-  // Function to move the planets based on mouse movement
   function movePlanets(event) {
     mouseX = event.clientX;
     mouseY = event.clientY;
   }
 
-  // Function to update the transformation of the planets
   function updateTransformations() {
     var offsetX = (mouseX - centerX) / 30;
     var offsetY = (mouseY - centerY) / 30;
 
-    mainAngle += 0.5; // Control the speed of rotation for the main planet
-    mediumAngle += 1; // Different speed for medium planet
-    smallAngle += 1.5; // Different speed for small planet
+    mainAngle += 0.5;
+    mediumAngle += 1;
+    smallAngle += 1.5;
 
     mainPlanet.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${mainAngle}deg)`;
     mediumPlanet.style.transform = `translate(${offsetX * 1.5}px, ${
@@ -134,9 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
     requestAnimationFrame(updateTransformations);
   }
 
-  // Add mousemove event listener to move planets
   window.addEventListener("mousemove", movePlanets);
-
-  // Start the animation
   requestAnimationFrame(updateTransformations);
 });
