@@ -135,3 +135,59 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("mousemove", movePlanets);
   requestAnimationFrame(updateTransformations);
 });
+
+//* Card Roll Over Animation
+document.addEventListener("scroll", function () {
+  const cards = document.querySelectorAll(".project-item:not(:first-child)");
+
+  cards.forEach((card) => {
+    const cardTop = card.getBoundingClientRect().top;
+    const transitionStart = 700;
+    const transitionEnd = 220;
+
+    if (cardTop <= transitionStart && cardTop >= transitionEnd) {
+      let percentage =
+        (cardTop - transitionEnd) / (transitionStart - transitionEnd);
+      let brightness = 30 + 70 * (1 - percentage);
+      let grayscale = 100 * percentage;
+      let scale = 1.01 - 0.01 * (1 - percentage);
+      card.style.filter = `brightness(${brightness}%) grayscale(${grayscale}%)`;
+      card.style.transform = `scale(${scale})`;
+    } else if (cardTop < transitionEnd) {
+      card.classList.add("light");
+      card.classList.remove("dark");
+      card.style.transform = "scale(1)";
+    } else {
+      card.classList.add("dark");
+      card.classList.remove("light");
+      card.style.transform = "scale(1.01)";
+    }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const projectItems = document.querySelectorAll(".card");
+
+  window.addEventListener("scroll", () => {
+    let scrollY = window.scrollY;
+    let viewportHeight = window.innerHeight;
+
+    projectItems.forEach((item, index) => {
+      let itemTop = item.getBoundingClientRect().top + scrollY;
+      let itemBottom = item.getBoundingClientRect().bottom + scrollY;
+      let nextItem = projectItems[index + 1];
+      let nextItemTop = nextItem
+        ? nextItem.getBoundingClientRect().top + scrollY
+        : document.body.scrollHeight;
+
+      if (
+        scrollY + viewportHeight > itemTop + viewportHeight / 2 &&
+        scrollY < nextItemTop - viewportHeight / 2
+      ) {
+        item.classList.add("focused");
+      } else {
+        item.classList.remove("focused");
+      }
+    });
+  });
+});
