@@ -191,3 +191,74 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+document.getElementById("contactButton").addEventListener("click", function () {
+  document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
+});
+
+document
+  .getElementById("downloadCvButton")
+  .addEventListener("click", function () {
+    var link = document.createElement("a");
+    link.href = "/static/pdf/Naif_Alsahabi_CV.pdf";
+
+    link.download = "Naif_Alsahabi_CV.pdf"; // Suggested filename for download
+    // Append the anchor to the body
+    document.body.appendChild(link);
+
+    // Programmatically click the anchor
+    link.click();
+
+    // Remove the anchor from the body
+    document.body.removeChild(link);
+  });
+
+//* slider *//
+const slider = document.querySelector(".slider");
+const track = document.querySelector(".slide-track");
+const slides = Array.from(document.querySelectorAll(".slide"));
+
+let slideWidth = slides[0].offsetWidth;
+let totalWidth = slideWidth * slides.length;
+
+// Set initial transform to show the first slide
+let startIndex = 0;
+track.style.transform = `translateX(-${slideWidth * startIndex}px)`;
+
+// Duplicate slides at the end for infinite effect
+slides.forEach((slide) => {
+  track.appendChild(slide.cloneNode(true));
+});
+
+// Function to loop the slider
+const loopSlider = () => {
+  // Get current transform value
+  const currentTransform = track.style.transform.replace(/[^\d.-]/g, "");
+  let currentOffset = parseFloat(currentTransform);
+
+  if (currentOffset >= totalWidth - slider.offsetWidth) {
+    // Reset to the start when reaching the end
+    currentOffset = 0;
+    track.style.transition = "none"; // Disable transition for instant reset
+    track.style.transform = `translateX(${currentOffset}px)`;
+
+    // Trigger reflow to apply transition removal
+    void track.offsetWidth;
+
+    // Re-enable transition
+    track.style.transition = "transform 0.5s ease-in-out";
+  }
+
+  track.style.transform = `translateX(-${currentOffset + slideWidth}px)`;
+};
+
+// Set interval to move slider
+let sliderInterval = setInterval(loopSlider, 2000);
+
+// Pause on hover
+slider.addEventListener("mouseenter", () => {
+  clearInterval(sliderInterval);
+});
+
+slider.addEventListener("mouseleave", () => {
+  sliderInterval = setInterval(loopSlider, 2000);
+});
