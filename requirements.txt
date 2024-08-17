@@ -4,7 +4,6 @@ asttokens==2.2.1
 backcall==0.2.0
 blinker==1.7.0
 certifi==2024.7.4
-click @ file:///C:/b/abs_f9ihnt72pu/croot/click_1698129847492/work
 colorama==0.4.6
 comm==0.1.4
 debugpy==1.6.8
