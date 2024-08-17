@@ -1,0 +1,67 @@
+annotated-types==0.7.0
+anyio==4.4.0
+asttokens==2.2.1
+backcall==0.2.0
+blinker==1.7.0
+certifi==2024.7.4
+click @ file:///C:/b/abs_f9ihnt72pu/croot/click_1698129847492/work
+colorama==0.4.6
+comm==0.1.4
+debugpy==1.6.8
+distlib==0.3.8
+dnspython==2.6.1
+email_validator==2.2.0
+executing==1.2.0
+fastapi==0.111.1
+fastapi-cli==0.0.4
+filelock==3.13.4
+Flask==3.0.3
+Flask-SQLAlchemy @ file:///C:/ci_311/flask-sqlalchemy_1676449960347/work
+greenlet @ file:///C:/ci_311/greenlet_1676436788118/work
+h11==0.14.0
+httpcore==1.0.5
+httptools==0.6.1
+httpx==0.27.0
+idna==3.7
+ipykernel==6.25.0
+ipython==8.14.0
+itsdangerous==2.1.2
+jedi==0.19.0
+Jinja2 @ file:///C:/ci_311/jinja2_1676424968965/work
+jupyter_client==8.3.0
+jupyter_core==5.3.1
+markdown-it-py==3.0.0
+MarkupSafe @ file:///C:/ci_311/markupsafe_1676424152318/work
+matplotlib-inline==0.1.6
+mdurl==0.1.2
+nest-asyncio==1.5.7
+parso==0.8.3
+pickleshare==0.7.5
+platformdirs==3.10.0
+prompt-toolkit==3.0.39
+psutil==5.9.5
+pure-eval==0.2.2
+pydantic==2.8.2
+pydantic_core==2.20.1
+Pygments==2.15.1
+python-dotenv==1.0.1
+python-multipart==0.0.9
+pywin32==306
+PyYAML==6.0.1
+pyzmq==25.1.0
+rich==13.7.1
+shellingham==1.5.4
+sniffio==1.3.1
+SQLAlchemy @ file:///C:/b/abs_d3tao6jnck/croot/sqlalchemy_1695720955292/work
+stack-data==0.6.2
+starlette==0.37.2
+tornado==6.3.2
+traitlets==5.9.0
+typer==0.12.3
+typing_extensions==4.12.2
+uvicorn==0.30.1
+virtualenv==20.25.1
+watchfiles==0.22.0
+wcwidth==0.2.6
+websockets==12.0
+Werkzeug==3.0.3
