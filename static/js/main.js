@@ -262,3 +262,19 @@ slider.addEventListener("mouseenter", () => {
 slider.addEventListener("mouseleave", () => {
   sliderInterval = setInterval(loopSlider, 2000);
 });
+
+//* menu button *//
+document.querySelector(".menu-button").addEventListener("click", function () {
+  document.querySelector("nav ul").classList.toggle("open");
+});
+
+document.querySelectorAll("nav ul li a").forEach(function (link) {
+  link.addEventListener("click", function () {
+    document.querySelector("nav ul").classList.remove("open");
+  });
+});
+
+document.getElementById("menu-button").addEventListener("click", function () {
+  document.body.classList.toggle("menu-active");
+  document.getElementById("menu").classList.toggle("active");
+});
