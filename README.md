@@ -2,9 +2,7 @@
 
 Personal portfolio for an AI Engineer: projects, skills, certifications, and contact — built with React, Vite, TypeScript, Tailwind CSS, and a custom WebGL particle field.
 
-![Portfolio screenshot](./docs/screenshot.png)
-
-> Add a screenshot at `docs/screenshot.png` after your first deploy.
+![Portfolio screenshot](./assets/Main.png)
 
 ## Highlights
 
