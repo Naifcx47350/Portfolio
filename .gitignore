@@ -5,6 +5,7 @@ npm-debug.log*
 
 # Dependencies
 node_modules
+docs/EDITOR_GUIDE.md
 
 # Build
 dist
