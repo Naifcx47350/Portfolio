@@ -30,6 +30,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    background-color: var(--bg-base);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -39,8 +40,17 @@
   }
 
   body {
-    @apply bg-base font-sans text-muted antialiased;
-    background-color: var(--bg-base);
+    @apply font-sans antialiased;
+    background-color: transparent;
+    color: var(--text-muted);
+  }
+
+  /* Belt-and-suspenders: paragraphs always get readable foreground color,
+     even if a motion wrapper or inheritance chain breaks. */
+  p,
+  li,
+  dd,
+  .body-text {
     color: var(--text-muted);
   }
 
@@ -93,3 +103,486 @@
   transform: scaleX(0);
   transform-origin: left center;
 }
+
+[dir='rtl'] .intro-line {
+  transform-origin: right center;
+}
+
+.intro-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.intro-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.35;
+  animation: intro-float 4s ease-in-out infinite;
+}
+
+@keyframes intro-float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translateY(-8px) scale(1.2);
+    opacity: 0.55;
+  }
+}
+
+/* Barely-there grain to kill flatness; sits behind all content. */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+[data-theme='light'] .grain-overlay {
+  opacity: 0.04;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .grain-overlay {
+    /* static texture; no animation by design */
+  }
+}
+
+/* Single accent device at section boundaries: a thin centered red hairline. */
+.edge-accent {
+  position: relative;
+}
+
+.edge-accent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(680px, 82%);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.45;
+}
+
+/* Hero full-bleed particles */
+.hero-particles-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 100% 92% at 50% 44%, #000 58%, transparent 100%);
+  mask-image: radial-gradient(ellipse 100% 92% at 50% 44%, #000 58%, transparent 100%);
+}
+
+.hero-particles-layer canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Section eyebrow node glyph */
+.glyph-node {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: glyphPulse 2.6s ease-in-out infinite;
+}
+.glyph-node-d1 { animation-delay: 0.3s; }
+.glyph-node-d2 { animation-delay: 0.6s; }
+.glyph-node-d3 { animation-delay: 0.9s; }
+
+@keyframes glyphPulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glyph-node { animation: none; }
+}
+
+/* Tech stack: full-color logos, desaturated at rest, alive on hover/select */
+.tech-logo {
+  filter: grayscale(1) opacity(0.62);
+  transition: filter 0.25s ease, transform 0.25s ease;
+}
+.tech-card:hover .tech-logo,
+.tech-card:focus-visible .tech-logo,
+.tech-card[aria-pressed='true'] .tech-logo {
+  filter: grayscale(0) opacity(1);
+}
+.tech-concept {
+  color: var(--text-muted);
+  transition: color 0.25s ease;
+}
+.tech-card:hover .tech-concept,
+.tech-card:focus-visible .tech-concept,
+.tech-card[aria-pressed='true'] .tech-concept {
+  color: var(--accent);
+}
+
+/* Description stage: text fades in above a centered red line */
+.tech-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.tech-stage-text {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 4.75rem;
+  padding-bottom: 0.85rem;
+}
+.tech-stage-line {
+  height: 1px;
+  width: min(440px, 72%);
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+/* Centered description overlay over the constellation */
+.tech-stage-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.tech-stage-overlay-inner {
+  display: flex;
+  width: min(540px, 86%);
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.tech-stage-card {
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  background: color-mix(in srgb, var(--bg-base) 70%, transparent);
+  padding: 0.6rem 1.25rem;
+  backdrop-filter: blur(6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-logo { filter: grayscale(0) opacity(1); transition: none; }
+}
+
+/* Skill constellation: floating logo nodes + canvas links */
+.constellation-node {
+  width: max-content;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.constellation-node:hover,
+.constellation-node:focus-visible,
+.constellation-node.is-selected {
+  background: color-mix(in srgb, var(--bg-elevated) 90%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.constellation-node.is-selected {
+  box-shadow: 0 0 0 1px var(--accent), 0 0 20px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.constellation-label {
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+.constellation-node:hover .constellation-label,
+.constellation-node:focus-visible .constellation-label,
+.constellation-node.is-selected .constellation-label {
+  color: var(--text-primary);
+}
+.constellation-hub {
+  pointer-events: none;
+  white-space: nowrap;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+/* Magnetic card tilt + cursor glow */
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.tilt-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  background: radial-gradient(
+    220px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--accent) 22%, transparent),
+    transparent 60%
+  );
+}
+.tilt-card:hover .tilt-glow,
+.tilt-card:focus-visible .tilt-glow {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt-card { transition: none; transform: none !important; }
+}
+
+.hero-particles-static {
+  background: radial-gradient(
+    ellipse 70% 60% at 55% 42%,
+    var(--accent-glow),
+    transparent 70%
+  );
+}
+
+.hero-vignette {
+  background: radial-gradient(
+    ellipse 100% 80% at 50% 50%,
+    transparent 40%,
+    var(--bg-base) 100%
+  );
+  opacity: 0.85;
+}
+.code-window .code-kw {
+  color: var(--accent);
+}
+
+.code-window .code-str {
+  color: var(--text-primary);
+}
+
+.code-window .code-arr {
+  color: color-mix(in srgb, var(--accent) 70%, var(--text-muted));
+}
+
+.code-window .code-fn {
+  color: var(--text-muted);
+}
+
+[dir='rtl'] .section-container {
+  text-align: right;
+}
+
+/* ===== About portrait — HUD tilt / latent reveal ===== */
+.portrait-3d {
+  perspective: 1100px;
+}
+
+.portrait-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  padding: 0;
+  will-change: transform;
+}
+
+.portrait-img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  filter: saturate(0.9) contrast(1.02) brightness(0.96);
+  transition: filter 0.5s ease;
+}
+
+.portrait-card.is-live .portrait-img {
+  filter: saturate(1.16) contrast(1.06) brightness(1.04);
+}
+
+.portrait-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity 0.4s ease;
+}
+
+.portrait-card.is-live .portrait-sheen {
+  opacity: 0.7;
+}
+
+.portrait-card.is-live .portrait-accent {
+  opacity: 1;
+}
+
+.portrait-scan {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.05) 0,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.3;
+  mix-blend-mode: overlay;
+  animation: portrait-scan-move 7s linear infinite;
+}
+
+@keyframes portrait-scan-move {
+  from {
+    background-position-y: 0;
+  }
+  to {
+    background-position-y: 120px;
+  }
+}
+
+.portrait-revealbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 16%;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(224, 50, 43, 0.35) 48%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(224, 50, 43, 0.35) 52%,
+    transparent
+  );
+  mix-blend-mode: screen;
+}
+
+.portrait-hud-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  z-index: 5;
+  pointer-events: none;
+  border: 2px solid var(--accent);
+  opacity: 0.5;
+  transition: opacity 0.4s ease, width 0.4s ease, height 0.4s ease;
+}
+
+.portrait-card.is-live .portrait-hud-corner {
+  opacity: 1;
+  width: 26px;
+  height: 26px;
+}
+
+.portrait-hud-corner.tl {
+  top: 10px;
+  left: 10px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.portrait-hud-corner.tr {
+  top: 10px;
+  right: 10px;
+  border-left: 0;
+  border-bottom: 0;
+}
+
+.portrait-hud-corner.bl {
+  bottom: 10px;
+  left: 10px;
+  border-right: 0;
+  border-top: 0;
+}
+
+.portrait-hud-corner.br {
+  bottom: 10px;
+  right: 10px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.portrait-status {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(10, 10, 12, 0.55);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transform: translateY(150%);
+  opacity: 0;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+}
+
+.portrait-card.is-live .portrait-status {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.portrait-status-dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 999px;
+  background: var(--accent);
+  animation: portrait-pulse 1.8s ease-out infinite;
+}
+
+@keyframes portrait-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(224, 50, 43, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 9px rgba(224, 50, 43, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(224, 50, 43, 0);
+  }
+}
+
+.portrait-status-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.portrait-status-tag {
+  margin-inline-start: auto;
+  font-family: ui-monospace, 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portrait-scan,
+  .portrait-status-dot {
+    animation: none;
+  }
+}
+

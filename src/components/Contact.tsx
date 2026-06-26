@@ -1,22 +1,22 @@
 import { FormEvent, useState } from 'react';
-import { motion } from 'framer-motion';
 import { Loader2, Send } from 'lucide-react';
 import { profile, socials } from '../data/profile';
-import { getSection } from '../data/sections';
-import { getRevealVariants, staggerContainer, viewportOnce } from '../lib/animations';
+import type { TranslationKeys } from '../data/i18n';
+import { SlideReveal } from './motion/ScrollMotion';
+import { NodeGlyph } from './NodeGlyph';
 
-// Replace with your Formspree form ID from https://formspree.io/
-const FORMSPREE_ID = 'YOUR_FORM_ID';
+const FORMSPREE_ID = 'mjgqypoa';
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
 interface ContactProps {
   reducedMotion: boolean;
+  t: TranslationKeys;
 }
 
-export function Contact({ reducedMotion }: ContactProps) {
-  const variants = getRevealVariants(reducedMotion);
-  const section = getSection('contact');
+export function Contact({ reducedMotion, t }: ContactProps) {
+  const c = t.contact;
+  const pc = t.profile.contact;
   const [status, setStatus] = useState<FormStatus>('idle');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -45,39 +45,31 @@ export function Contact({ reducedMotion }: ContactProps) {
   };
 
   return (
-    <section id="contact" className="border-t border-border py-24 sm:py-32">
+    <section id="contact" className="edge-accent py-24 sm:py-32">
       <div className="section-container">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          variants={staggerContainer}
-          className="mx-auto max-w-xl"
-        >
-          <motion.p variants={variants} className="section-eyebrow mb-3">
-            {section.index} — {section.label}
-          </motion.p>
-          <motion.h2
-            variants={variants}
-            className="font-display text-3xl font-bold tracking-tight text-primary sm:text-4xl"
-          >
-            {section.title}
-          </motion.h2>
-          {section.description && (
-            <motion.p variants={variants} className="mt-4">
-              {section.description}
-            </motion.p>
-          )}
+        <div className="mx-auto max-w-xl">
+          <SlideReveal reducedMotion={reducedMotion} direction="up">
+            <p className="section-eyebrow mb-3 inline-flex items-center gap-2">
+              <NodeGlyph reducedMotion={reducedMotion} />
+              {c.index} — {c.label}
+            </p>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-primary sm:text-4xl">
+              {c.title}
+            </h2>
+            <p className="body-text mt-4" style={{ color: 'var(--text-muted)' }}>
+              {c.description}
+            </p>
+          </SlideReveal>
 
-          <motion.form
-            variants={variants}
+          <SlideReveal reducedMotion={reducedMotion} direction="up">
+          <form
             onSubmit={handleSubmit}
             className="mt-10 space-y-5"
             noValidate
           >
             <div>
               <label htmlFor="name" className="mb-1.5 block font-mono text-xs uppercase tracking-wider text-muted">
-                Name
+                {c.name}
               </label>
               <input
                 id="name"
@@ -90,7 +82,7 @@ export function Contact({ reducedMotion }: ContactProps) {
             </div>
             <div>
               <label htmlFor="email" className="mb-1.5 block font-mono text-xs uppercase tracking-wider text-muted">
-                Email
+                {c.email}
               </label>
               <input
                 id="email"
@@ -103,7 +95,7 @@ export function Contact({ reducedMotion }: ContactProps) {
             </div>
             <div>
               <label htmlFor="message" className="mb-1.5 block font-mono text-xs uppercase tracking-wider text-muted">
-                Message
+                {c.message}
               </label>
               <textarea
                 id="message"
@@ -122,30 +114,31 @@ export function Contact({ reducedMotion }: ContactProps) {
               {status === 'submitting' ? (
                 <>
                   <Loader2 size={16} className="animate-spin" aria-hidden="true" />
-                  Sending…
+                  {c.sending}
                 </>
               ) : (
                 <>
                   <Send size={16} aria-hidden="true" />
-                  Send message
+                  {c.send}
                 </>
               )}
             </button>
 
             {status === 'success' && (
               <p className="text-sm text-primary" role="status">
-                {profile.contact.successMessage}
+                {pc.successMessage}
               </p>
             )}
             {status === 'error' && (
               <p className="text-sm text-accent" role="alert">
-                {profile.contact.errorMessage}
+                {pc.errorMessage}
               </p>
             )}
-          </motion.form>
+          </form>
+          </SlideReveal>
 
-          <motion.div variants={variants} className="mt-8 border-t border-border pt-8 text-sm">
-            <p className="text-muted">{profile.contact.fallbackLabel}</p>
+          <SlideReveal reducedMotion={reducedMotion} direction="up" className="mt-8 border-t border-border pt-8 text-sm">
+            <p className="text-muted">{pc.fallbackLabel}</p>
             <div className="mt-3 flex flex-wrap gap-4">
               <a href={socials.email} className="font-mono text-primary hover:text-accent">
                 {profile.email}
@@ -159,8 +152,8 @@ export function Contact({ reducedMotion }: ContactProps) {
                 LinkedIn
               </a>
             </div>
-          </motion.div>
-        </motion.div>
+          </SlideReveal>
+        </div>
       </div>
     </section>
   );

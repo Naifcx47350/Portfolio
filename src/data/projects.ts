@@ -1,6 +1,19 @@
+// `icon` maps to a domain glyph in ProjectBanner (see iconMap there).
+// `image` → path under public/ (e.g. "Screenshots/TerraMind/TerraMind1.png")
+export type ProjectIcon =
+  | 'sprout'
+  | 'droplet'
+  | 'scan-text'
+  | 'book-open'
+  | 'activity'
+  | 'align-left'
+  | 'mail'
+  | 'library';
+
 export type Project = {
   slug: string;
   title: string;
+  year: string;
   summary: string;
   description?: string;
   tech: string[];
@@ -8,12 +21,15 @@ export type Project = {
   live?: string;
   featured: boolean;
   tags?: string[];
+  icon: ProjectIcon;
+  image?: string;
 };
 
 export const projects: Project[] = [
   {
     slug: "terramind",
     title: "TerraMind",
+    year: "2026",
     summary:
       "Full-stack agriculture AI assistant with multi-RAG retrieval, source-grounded answers, and an LLM comparison mode.",
     description:
@@ -21,11 +37,14 @@ export const projects: Project[] = [
     tech: ["React", "FastAPI", "OpenAI", "LangChain", "ChromaDB", "Docker"],
     repo: "https://github.com/Naifcx47350/TerraMind",
     featured: true,
-    tags: ["LLM", "RAG", "AgriTech"]
+    tags: ["LLM", "RAG", "AgriTech"],
+    icon: "sprout",
+    image: "Screenshots/TerraMind/TerraMind1.png"
   },
   {
     slug: "naskh",
     title: "Naskh",
+    year: "2026",
     summary:
       "Human-in-the-loop document intelligence for Arabic and bilingual business documents.",
     description:
@@ -33,11 +52,14 @@ export const projects: Project[] = [
     tech: ["FastAPI", "React", "Vite", "TypeScript", "ChromaDB", "Framer Motion"],
     repo: "https://github.com/Naifcx47350/Naskh",
     featured: true,
-    tags: ["LLM", "Document AI", "Arabic NLP"]
+    tags: ["LLM", "Document AI", "Arabic NLP"],
+    icon: "scan-text",
+    image: "Screenshots/Naskh/Naskh1.png"
   },
   {
     slug: "hafidhai",
     title: "HafidhAI",
+    year: "2025",
     summary:
       "AI-powered, multi-language Quran memorization assistant built for Ayat-thon (آياتثون) 2025.",
     description:
@@ -45,11 +67,14 @@ export const projects: Project[] = [
     tech: ["Python", "AI", "NLP"],
     repo: "https://github.com/Naifcx47350/HafidhAI",
     featured: true,
-    tags: ["AI", "Hackathon"]
+    tags: ["AI", "Hackathon"],
+    icon: "book-open",
+    image: "Screenshots/HafidhAI/image.png"
   },
   {
     slug: "hydroai",
     title: "HydroAI",
+    year: "2025",
     summary:
       "AI water-monitoring system: leak/anomaly detection, consumption forecasting, and water-quality assessment.",
     description:
@@ -57,43 +82,54 @@ export const projects: Project[] = [
     tech: ["Python", "Scikit-learn", "Streamlit", "Pandas"],
     repo: "https://github.com/Naifcx47350/HydroAI",
     featured: true,
-    tags: ["ML", "Anomaly Detection", "Hackathon"]
+    tags: ["ML", "Anomaly Detection", "Hackathon"],
+    icon: "droplet",
+    image: "Screenshots/HydroAI/image.png"
   },
   {
     slug: "anomaly-detection",
     title: "Financial Anomaly Detection",
+    year: "2024",
     summary:
       "Autoencoder-based model that flags high-risk, unusual financial transactions.",
     tech: ["Python", "TensorFlow", "Scikit-learn"],
     repo: "https://github.com/Naifcx47350/Anomaly-detection-project",
     featured: false,
-    tags: ["ML", "Anomaly Detection"]
+    tags: ["ML", "Anomaly Detection"],
+    icon: "activity"
   },
   {
     slug: "text-summarizer",
     title: "Text Summarizer",
+    year: "2024",
     summary: "NLP tool that condenses long text into concise summaries.",
     tech: ["Python", "NLP"],
     repo: "https://github.com/Naifcx47350/Text-Summarizer",
     featured: false,
-    tags: ["NLP"]
+    tags: ["NLP"],
+    icon: "align-left"
   },
   {
     slug: "email-gen",
     title: "Email Generator",
+    year: "2024",
     summary: "LLM-assisted tool for generating professional emails.",
     tech: ["Python", "LLM"],
     repo: "https://github.com/Naifcx47350/Email-gen",
+    live: "https://email-gen-nc4.streamlit.app",
     featured: false,
-    tags: ["LLM", "NLP"]
+    tags: ["LLM", "NLP"],
+    icon: "mail"
   },
   {
     slug: "library-management",
     title: "Library Management System",
+    year: "2024",
     summary: "A management system for handling library records and operations.",
     tech: ["Java"],
     repo: "https://github.com/Naifcx47350/Library_Management_System",
     featured: false,
-    tags: ["Software"]
+    tags: ["Software"],
+    icon: "library"
   }
 ];
