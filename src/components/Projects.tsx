@@ -46,6 +46,7 @@ export function Projects({ reducedMotion, locale, t }: ProjectsProps) {
                   onOpen={setActiveProject}
                   clickLabel={proj.clickDetails}
                   reducedMotion={reducedMotion}
+                  t={t}
                 />
               </SlideReveal>
             ))}
@@ -66,6 +67,7 @@ export function Projects({ reducedMotion, locale, t }: ProjectsProps) {
                       onOpen={setActiveProject}
                       clickLabel={proj.clickDetails}
                       reducedMotion={reducedMotion}
+                      t={t}
                     />
                   </SlideReveal>
                 ))}

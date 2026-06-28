@@ -83,7 +83,7 @@ export function Hero({ reducedMotion, introComplete, theme, t }: HeroProps) {
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen items-center overflow-hidden pt-24 pb-16"
+      className="relative flex min-h-screen touch-pan-y items-center overflow-hidden pt-24 pb-16"
       aria-label="Introduction"
     >
       <HeroBackground disabled={reducedMotion} />
@@ -96,7 +96,7 @@ export function Hero({ reducedMotion, introComplete, theme, t }: HeroProps) {
             initial="hidden"
             animate={introComplete ? 'visible' : 'hidden'}
             variants={staggerContainer}
-            className="min-w-0 max-w-3xl flex-1"
+            className="min-w-0 max-w-3xl flex-1 select-none"
           >
             <motion.p variants={variants} className="section-eyebrow mb-4">
               {p.role}
@@ -172,7 +172,7 @@ export function Hero({ reducedMotion, introComplete, theme, t }: HeroProps) {
             initial="hidden"
             animate={introComplete ? 'visible' : 'hidden'}
             variants={variants}
-            className="relative z-[6] w-full shrink-0 xl:max-w-md xl:pt-8"
+            className="relative z-[6] w-full shrink-0 select-none xl:max-w-md xl:pt-8"
           >
             <HeroCodeBlock reducedMotion={reducedMotion} />
           </motion.div>

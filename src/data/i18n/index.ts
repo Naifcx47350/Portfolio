@@ -43,6 +43,10 @@ const en = {
     clickDetails: 'Click for details',
     viewRepo: 'View repository',
     openLive: 'Open live demo',
+    confidentialBadge: 'KACST Internal',
+    confidentialNote: 'Confidential',
+    confidentialDisclaimer: 'Early-stage previews only. Full system is internal to KACST.',
+    closePreview: 'Close preview',
   },
   skills: {
     index: '02',
@@ -151,6 +155,10 @@ const ar: TranslationKeys = {
     clickDetails: 'اضغط للتفاصيل',
     viewRepo: 'عرض المستودع',
     openLive: 'فتح العرض المباشر',
+    confidentialBadge: 'KACST داخلي',
+    confidentialNote: 'سري',
+    confidentialDisclaimer: 'معاينات مبكرة فقط. النظام الكامل داخلي لدى KACST.',
+    closePreview: 'إغلاق المعاينة',
   },
   skills: {
     index: '02',

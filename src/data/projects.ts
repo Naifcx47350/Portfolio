@@ -17,13 +17,21 @@ export type Project = {
   summary: string;
   description?: string;
   tech: string[];
-  repo: string;
+  repo?: string;
   live?: string;
   featured: boolean;
   tags?: string[];
   icon: ProjectIcon;
-  image?: string;
+  /** Single path or gallery under public/ (e.g. "Screenshots/TerraMind/TerraMind1.png"). */
+  image?: string | string[];
+  /** Omit repo/live links; show KACST confidential badge instead. */
+  confidential?: boolean;
 };
+
+export function projectImages(project: Project): string[] {
+  if (!project.image) return [];
+  return Array.isArray(project.image) ? project.image : [project.image];
+}
 
 export const projects: Project[] = [
   {
@@ -85,6 +93,21 @@ export const projects: Project[] = [
     tags: ["ML", "Anomaly Detection", "Hackathon"],
     icon: "droplet",
     image: "Screenshots/HydroAI/image.png"
+  },
+  {
+    slug: "parkinsons-blink",
+    title: "Camera-Based Eye-Blink Assessment for Parkinson's Screening",
+    year: "2025",
+    summary:
+      "End-to-end ML pipeline analyzing eye-blink patterns from natural video for early Parkinson's screening, deployed behind an API for internal medical platforms.",
+    description:
+      "Built a leak-proof ML pipeline with patient-aware splits, preprocessing, feature selection, and calibration. Extracted video features using MediaPipe Face Mesh and OpenFace 2.2.0 into a unified schema, integrated the YouTubePD dataset, and engineered a top-20 hybrid feature set. Trained and validated SVM, XGBoost, and MLP models, finalizing a calibrated MLP (F1 0.580, AUROC 0.816, Accuracy 0.845). Deployed the full pipeline behind an API with strict JSON I/O contracts, plus complete documentation: feature dictionary, validation protocol, model release notes, and deployment runbook.",
+    tech: ["Python", "Scikit-learn", "MediaPipe", "OpenFace", "OpenCV", "Pandas", "FastAPI"],
+    featured: false,
+    tags: ["Medical AI", "Computer Vision", "ML"],
+    icon: "activity",
+    image: ["Screenshots/Parkinsons/Parkinsons_1.png"],
+    confidential: true,
   },
   {
     slug: "anomaly-detection",

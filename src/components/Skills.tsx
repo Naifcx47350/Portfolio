@@ -44,11 +44,19 @@ export function Skills({ reducedMotion, theme, t }: SkillsProps) {
 
   const description = (
     <AnimatePresence mode="wait" initial={false}>
-      {selected && (
+      {selected ? (
         <motion.div key={selected} className="tech-stage-card" {...fade}>
-          <p className="font-display text-lg font-semibold text-primary sm:text-xl">{selected}</p>
-          <p className="mt-1 text-sm text-muted sm:text-base">{techDescriptions[selected] ?? ''}</p>
+          <p className="font-display text-xl font-semibold tracking-tight text-primary sm:text-2xl">
+            {selected}
+          </p>
+          <p className="mt-2 max-w-lg text-sm leading-relaxed tech-stage-desc sm:text-base">
+            {techDescriptions[selected] ?? ''}
+          </p>
         </motion.div>
+      ) : (
+        <motion.p key="hint" className="tech-stage-hint max-w-md text-sm" {...fade}>
+          {s.selectHint}
+        </motion.p>
       )}
     </AnimatePresence>
   );
@@ -135,25 +143,24 @@ export function Skills({ reducedMotion, theme, t }: SkillsProps) {
         {/* Desktop */}
         <div className="hidden md:block">
           {view === 'node' ? (
-            <div className="relative mt-4 h-[clamp(540px,64vh,680px)] w-full">
-              <SkillConstellation
-                reducedMotion={reducedMotion}
-                theme={theme}
-                t={t}
-                selected={selected}
-                onSelect={select}
-              />
-              {/* Description floats in the middle, just above the red line */}
-              <div className="tech-stage-overlay" aria-live="polite">
-                <div className="tech-stage-overlay-inner">
-                  <div className="tech-stage-text">{description}</div>
-                  <span className="tech-stage-line" aria-hidden="true" />
-                </div>
+            <div className="mt-4">
+              <div className="relative h-[clamp(480px,58vh,620px)] w-full">
+                <SkillConstellation
+                  reducedMotion={reducedMotion}
+                  theme={theme}
+                  t={t}
+                  selected={selected}
+                  onSelect={select}
+                />
+              </div>
+              <div className="tech-stage tech-stage-below" aria-live="polite">
+                <div className="tech-stage-text">{description}</div>
+                <span className="tech-stage-line" aria-hidden="true" />
               </div>
             </div>
           ) : (
             <div className="mt-8">
-              <div className="tech-stage">
+              <div className="tech-stage tech-stage-below">
                 <div className="tech-stage-text">{description}</div>
                 <span className="tech-stage-line" aria-hidden="true" />
               </div>
@@ -164,7 +171,7 @@ export function Skills({ reducedMotion, theme, t }: SkillsProps) {
 
         {/* Mobile: list with a description stage above */}
         <div className="mt-8 md:hidden">
-          <div className="tech-stage" aria-live="polite">
+          <div className="tech-stage tech-stage-below" aria-live="polite">
             <div className="tech-stage-text">{description}</div>
             <span className="tech-stage-line" aria-hidden="true" />
           </div>

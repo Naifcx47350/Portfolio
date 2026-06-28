@@ -1,5 +1,7 @@
 import { Maximize2 } from 'lucide-react';
 import type { Project } from '../data/projects';
+import type { TranslationKeys } from '../data/i18n';
+import { ConfidentialBadge } from './ConfidentialBadge';
 import { ProjectBanner } from './ProjectBanner';
 import { TechChip } from './TechChip';
 import { TiltCard } from './TiltCard';
@@ -10,6 +12,7 @@ interface ProjectCardProps {
   onOpen: (project: Project) => void;
   clickLabel: string;
   reducedMotion: boolean;
+  t: TranslationKeys;
 }
 
 export function ProjectCard({
@@ -18,6 +21,7 @@ export function ProjectCard({
   onOpen,
   clickLabel,
   reducedMotion,
+  t,
 }: ProjectCardProps) {
   return (
     <TiltCard reducedMotion={reducedMotion} className="h-full">
@@ -75,11 +79,15 @@ export function ProjectCard({
         <span className="font-mono text-xs text-muted group-hover:text-accent">
           {clickLabel}
         </span>
-        <Maximize2
-          size={14}
-          className="text-muted opacity-0 transition-opacity group-hover:opacity-100"
-          aria-hidden="true"
-        />
+        {project.confidential ? (
+          <ConfidentialBadge t={t} compact />
+        ) : (
+          <Maximize2
+            size={14}
+            className="text-muted opacity-0 transition-opacity group-hover:opacity-100"
+            aria-hidden="true"
+          />
+        )}
       </div>
     </button>
     </TiltCard>

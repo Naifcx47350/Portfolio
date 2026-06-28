@@ -2,14 +2,17 @@
 
 Personal portfolio for an AI Engineer: projects, skills, certifications, and contact — built with React, Vite, TypeScript, Tailwind CSS, and a custom WebGL particle field.
 
-**Live site:** [naifcx47350.github.io/Portfolio](https://naifcx47350.github.io/Portfolio/)
+**Live site:** [naifcx47350.github.io/Portfolio](https://naifcx47350.github.io/Portfolio/) · **v1.2**
 
 ![Portfolio screenshot](./docs/screenshot.png)
 
-## Highlights
+## Highlights (v1.2)
 
-- **Hero latent-space field** — GPU particle cloud (WebGL/OGL) seeded from real projects; circular by default, warps toward the cursor outside the content column
+- **Hero latent-space field** — GPU particle cloud (WebGL/OGL) seeded from real projects; warps toward the cursor outside the content column; hold-click vortex capture with orbital motion
+- **About portrait frame** — HUD-style interactive frame with 3D tilt, cursor sheen, and scan reveal
 - **Interactive Skills constellation** — full-color brand logos as nodes, animated links, tap-to-reveal descriptions; Graph and List views
+- **Confidential projects** — KACST-internal work shown with title, description, and early-stage previews only (no repo/live links; badge on card and modal)
+- **Project image lightbox** — click screenshots in the detail modal to expand; arrow-key navigation for galleries
 - **Scroll-linked reveals** — bidirectional slide-in animations across sections via Framer Motion
 - **Section dock spine** — scroll progress indicator aligned to page sections
 - **In-browser certificate previews** — PDFs rendered inline via pdf.js
@@ -55,7 +58,7 @@ Portfolio/
 | File | Purpose |
 |------|---------|
 | `src/data/profile.ts` | Name, bio, education, social links |
-| `src/data/projects.ts` | Projects, tech stacks, screenshot paths |
+| `src/data/projects.ts` | Projects, tech stacks, screenshot paths, `confidential` flag |
 | `src/data/skills.ts` | Skill groups |
 | `src/data/techMeta.ts` | Skill descriptions (constellation tap) |
 | `src/data/certifications.ts` | Certifications and PDF paths |
@@ -95,7 +98,7 @@ To host elsewhere, change `base` in `vite.config.ts`:
 |-------|----------|
 | Nav logos | `public/brand/logo-dark.png`, `logo-light.png` |
 | Favicons | `public/favicon*` |
-| Project screenshots | `public/Screenshots/<Project>/` → `image` in `projects.ts` |
+| Project screenshots | `public/Screenshots/<Project>/` → `image` in `projects.ts` (string or array for galleries) |
 | Certificate PDFs | `public/Certifaction/<Issuer>/` → `pdf` in `certifications.ts` |
 | Skill logos | Mapped in `src/components/TechLogo.tsx` |
 

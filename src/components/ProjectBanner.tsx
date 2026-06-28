@@ -10,6 +10,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import type { Project, ProjectIcon } from '../data/projects';
+import { projectImages } from '../data/projects';
 import { publicAssetUrl } from '../lib/assets';
 
 const iconMap: Record<ProjectIcon, LucideIcon> = {
@@ -48,25 +49,71 @@ function mulberry32(seed: number) {
 interface ProjectBannerProps {
   project: Project;
   featured?: boolean;
+  interactive?: boolean;
+  onImageClick?: (index: number) => void;
 }
 
 const W = 160;
 const H = 90;
 
-export function ProjectBanner({ project, featured = false }: ProjectBannerProps) {
+export function ProjectBanner({
+  project,
+  featured = false,
+  interactive = false,
+  onImageClick,
+}: ProjectBannerProps) {
   const Icon = iconMap[project.icon];
   const seedBase = hashString(project.slug);
+  const images = projectImages(project);
 
-  // Real screenshot takes precedence over the procedural banner.
-  if (project.image) {
+  if (images.length > 0) {
+    const aspect = featured ? 'aspect-[16/9]' : 'aspect-[16/7]';
+    const src = images[0]!;
+
+    if (interactive && onImageClick) {
+      return (
+        <div className="space-y-2">
+          <button
+            type="button"
+            onClick={() => onImageClick(0)}
+            className={`relative w-full overflow-hidden rounded-md border border-border transition-colors hover:border-accent/40 ${aspect}`}
+            aria-label={`Expand ${project.title} preview`}
+          >
+            <img
+              src={publicAssetUrl(src)}
+              alt={`${project.title} preview`}
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+          </button>
+          {images.length > 1 && (
+            <div className="flex flex-wrap gap-2">
+              {images.map((path, i) => (
+                <button
+                  key={path}
+                  type="button"
+                  onClick={() => onImageClick(i)}
+                  className="h-14 w-24 overflow-hidden rounded border border-border transition-colors hover:border-accent/40 sm:h-16 sm:w-28"
+                  aria-label={`Expand preview ${i + 1}`}
+                >
+                  <img
+                    src={publicAssetUrl(path)}
+                    alt=""
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
     return (
-      <div
-        className={`relative w-full overflow-hidden rounded-md border border-border ${
-          featured ? 'aspect-[16/9]' : 'aspect-[16/7]'
-        }`}
-      >
+      <div className={`relative w-full overflow-hidden rounded-md border border-border ${aspect}`}>
         <img
-          src={publicAssetUrl(project.image)}
+          src={publicAssetUrl(src)}
           alt={`${project.title} preview`}
           loading="lazy"
           className="h-full w-full object-cover"
