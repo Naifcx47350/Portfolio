@@ -41,7 +41,7 @@ Portfolio/
 │   └── resume.pdf
 ├── src/
 │   ├── components/         # UI (Hero, Skills, Projects, …)
-│   ├── data/               # Content — edit these to update the site
+│   ├── data/               # Content
 │   ├── hooks/
 │   ├── lib/
 │   └── styles/
