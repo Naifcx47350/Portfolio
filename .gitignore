@@ -5,7 +5,10 @@ npm-debug.log*
 
 # Dependencies
 node_modules
+
+# Local-only editor notes (not published)
 EDITOR_GUIDE.md
+docs/EDITOR_GUIDE.md
 
 # Build
 dist

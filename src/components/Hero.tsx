@@ -104,7 +104,7 @@ export function Hero({ reducedMotion, introComplete, theme, t }: HeroProps) {
 
             <motion.h1
               variants={variants}
-              className="whitespace-nowrap font-display text-5xl font-bold tracking-tight text-primary sm:text-6xl md:text-7xl lg:text-8xl"
+              className="text-balance font-display text-[clamp(2.25rem,9vw,3.75rem)] font-bold tracking-tight text-primary sm:text-6xl sm:whitespace-nowrap md:text-7xl lg:text-8xl"
             >
               {p.name}
             </motion.h1>

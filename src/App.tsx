@@ -58,7 +58,7 @@ function App() {
         reducedMotion={reducedMotion}
         t={t}
       />
-      <main>
+      <main className="overflow-x-clip">
         <Hero
           reducedMotion={reducedMotion}
           introComplete={introComplete}

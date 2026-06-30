@@ -63,7 +63,7 @@ export function SlideReveal({
   return (
     <motion.div
       ref={ref}
-      className={className}
+      className={`${className} max-w-full overflow-x-clip`}
       style={{ x, y, opacity, willChange: 'transform, opacity' }}
     >
       {children}

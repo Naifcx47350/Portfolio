@@ -31,6 +31,7 @@
   html {
     scroll-behavior: smooth;
     background-color: var(--bg-base);
+    overflow-x: clip;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -43,6 +44,8 @@
     @apply font-sans antialiased;
     background-color: transparent;
     color: var(--text-muted);
+    overflow-x: clip;
+    max-width: 100%;
   }
 
   /* Belt-and-suspenders: paragraphs always get readable foreground color,
