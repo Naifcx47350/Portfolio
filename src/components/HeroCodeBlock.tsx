@@ -19,11 +19,13 @@ const FULL_TEXT = CODE_LINES.map((l) => l.text).join('\n');
 
 interface HeroCodeBlockProps {
   reducedMotion: boolean;
+  /** Hold the typing animation until the hero is actually on screen (intro done). */
+  start?: boolean;
   className?: string;
   id?: string;
 }
 
-export function HeroCodeBlock({ reducedMotion, className = '', id }: HeroCodeBlockProps) {
+export function HeroCodeBlock({ reducedMotion, start = true, className = '', id }: HeroCodeBlockProps) {
   const [charCount, setCharCount] = useState(() =>
     reducedMotion ? FULL_TEXT.length : 0
   );
@@ -33,10 +35,14 @@ export function HeroCodeBlock({ reducedMotion, className = '', id }: HeroCodeBlo
       setCharCount(FULL_TEXT.length);
       return;
     }
+    // Wait for the intro to finish so the type-out is actually visible.
+    if (!start) {
+      setCharCount(0);
+      return;
+    }
 
-    // Types out on every page open. Time-based reveal aligned to the animation
-    // frame: smooth, frame-rate independent, with far fewer state updates than
-    // per-char timeouts.
+    // Time-based reveal aligned to the animation frame: smooth, frame-rate
+    // independent, with far fewer state updates than per-char timeouts.
     const CHARS_PER_SECOND = 230;
     let rafId = 0;
     let startTs = 0;
@@ -50,16 +56,16 @@ export function HeroCodeBlock({ reducedMotion, className = '', id }: HeroCodeBlo
       rafId = requestAnimationFrame(step);
     };
 
-    // Start almost immediately on open.
+    // Small beat after the hero settles, then type.
     const startTimeout = window.setTimeout(() => {
       rafId = requestAnimationFrame(step);
-    }, 120);
+    }, 260);
 
     return () => {
       window.clearTimeout(startTimeout);
       cancelAnimationFrame(rafId);
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, start]);
 
   const rendered = useMemo(() => {
     let offset = 0;

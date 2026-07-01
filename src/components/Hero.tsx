@@ -174,7 +174,7 @@ export function Hero({ reducedMotion, introComplete, theme, t }: HeroProps) {
             variants={variants}
             className="relative z-[6] w-full shrink-0 select-none xl:max-w-md xl:pt-8"
           >
-            <HeroCodeBlock reducedMotion={reducedMotion} />
+            <HeroCodeBlock reducedMotion={reducedMotion} start={introComplete} />
           </motion.div>
         </div>
       </div>

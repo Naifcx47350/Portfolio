@@ -7,7 +7,7 @@ export interface LatentCluster {
   center: [number, number];
   /** Relative share of the total particle budget. */
   weight: number;
-  /** Hex color per theme — red used as punctuation, neutrals as fill. */
+  /** Hex color per theme — dark: red punctuation; light: sky blue / navy / magenta facets. */
   dark: string;
   light: string;
 }
@@ -17,10 +17,10 @@ export interface LatentCluster {
  * centroids, so the drifting cloud is a loose "latent space" portrait of the work.
  */
 export const latentClusters: LatentCluster[] = [
-  { name: 'HafidhAI', center: [-0.58, 0.34], weight: 1.0, dark: '#E0322B', light: '#C42820' },
-  { name: 'TerraMind', center: [0.6, 0.42], weight: 1.0, dark: '#F2F2F4', light: '#3A3A3E' },
-  { name: 'HydroAI', center: [-0.46, -0.42], weight: 0.95, dark: '#A1A1A6', light: '#6E6E73' },
-  { name: 'Naskh', center: [0.5, -0.34], weight: 0.95, dark: '#8B1A16', light: '#7A1410' },
+  { name: 'HafidhAI', center: [-0.49, 0.29], weight: 1.0, dark: '#E0322B', light: '#8ECBF5' },
+  { name: 'TerraMind', center: [0.5, 0.35], weight: 1.0, dark: '#F2F2F4', light: '#A8BFD4' },
+  { name: 'HydroAI', center: [-0.39, -0.35], weight: 0.95, dark: '#A1A1A6', light: '#B8DEFF' },
+  { name: 'Naskh', center: [0.42, -0.29], weight: 0.95, dark: '#8B1A16', light: '#E8B4D8' },
 ];
 
 export function clusterColors(theme: Theme): [number, number, number][] {

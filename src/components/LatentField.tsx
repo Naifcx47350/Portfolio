@@ -9,12 +9,22 @@ interface LatentFieldProps {
 }
 
 function particleCount(): number {
-  if (typeof window === 'undefined') return 28000;
+  if (typeof window === 'undefined') return 30000;
   const w = window.innerWidth;
-  if (w < 480) return 11000;
-  if (w < 768) return 19000;
-  if (w < 1280) return 28000;
-  return 42000;
+  if (w < 480) return 12000;
+  if (w < 768) return 21000;
+  if (w < 1280) return 30000;
+  return 52000;
+}
+
+/** Pull cluster layout inward on wide viewports so the four lobes overlap more. */
+function clusterInwardScale(): number {
+  if (typeof window === 'undefined') return 0.84;
+  const aspect = window.innerWidth / Math.max(1, window.innerHeight);
+  if (aspect >= 2.1) return 0.8;
+  if (aspect >= 1.75) return 0.86;
+  if (aspect >= 1.45) return 0.92;
+  return 0.96;
 }
 
 function isCoarsePointer(): boolean {
@@ -43,12 +53,16 @@ const vertex = /* glsl */ `
   uniform float uPixelRatio;
   uniform vec2 uCursor;
   uniform float uCursorActive;
-  uniform float uPull;
   uniform float uAttract;
   uniform float uAttractAge;
+  uniform float uAlphaScale;
+  uniform float uBrighten;
+  uniform float uSizeScale;
   uniform float uVortexRadius;
   uniform float uPushRadius;
   uniform float uInteractScale;
+  uniform float uColorBleed;
+  uniform float uSoftEdge;
   uniform vec3 uC0;
   uniform vec3 uC1;
   uniform vec3 uC2;
@@ -138,48 +152,33 @@ const vertex = /* glsl */ `
     vec3 home = mix(position, aTarget, morph);
 
     float freq = 0.9 + aSeed * 0.2;
-    vec3 sample = vec3(home.xy * freq + uTime * 0.035, uTime * 0.06 + aSeed * 6.28);
+    vec3 sample = vec3(home.xy * freq + uTime * 0.028, uTime * 0.05 + aSeed * 6.28);
     vec3 flow = curlNoise(sample);
     flow = flow / (1.0 + length(flow));
     float amp = 0.13 + 0.06 * morph;
     vec3 pos = home + flow * amp;
 
-    if (uPull > 0.001) {
-      vec2 dir = normalize(uCursor + vec2(0.0001));
-      float along = dot(pos.xy, dir);
-      vec2 alongVec = along * dir;
-      vec2 perpVec = pos.xy - alongVec;
-      float stretch = 1.0 + uPull * 1.15;
-      float squash = 1.0 - uPull * 0.28;
-      pos.xy = alongVec * stretch + perpVec * squash;
-      pos.xy += dir * uPull * 0.18;
-    }
-
     vec2 d = pos.xy - uCursor;
     float dist = length(d);
     vec2 dir = normalize(d + vec2(0.0001));
 
-    // Capture zone = full cloud; influence ramps so the core fills in first.
     float inCloud = smoothstep(uVortexRadius * 1.05, uVortexRadius * 0.38, dist);
     float coreBias = smoothstep(uVortexRadius * 0.72, uVortexRadius * 0.08, dist);
     float localAttract = uAttract * inCloud * (0.55 + coreBias * 0.45);
 
-    // Repel — fades out inside the active vortex zone only.
     float pushAmt = smoothstep(uPushRadius, 0.0, dist) * uCursorActive * (1.0 - localAttract);
     pos.xy += dir * pushAmt * 0.28 * uInteractScale;
 
-    // Hold: accretion disc — orbits biased toward the core so paths cross at the center.
     if (localAttract > 0.001) {
       vec2 rel = pos.xy - uCursor;
       float r = length(rel);
-      float phase = aSeed * 6.2831853 + aCluster * 1.256;
-      float theta = (r > 0.01) ? atan(rel.y, rel.x) : phase;
+      float orbitPhase = aSeed * 6.2831853 + aCluster * 1.256;
+      float theta = (r > 0.01) ? atan(rel.y, rel.x) : orbitPhase;
 
       float lane = fract(aSeed * 9.731 + aCluster * 0.41);
       float shell = fract(aSeed * 5.17 + aCluster * 0.19 + lane * 0.31);
       float innerR = 0.035;
       float outerR = uVortexRadius * 0.62;
-      // pow(<1) stacks more shells near the middle — intersections happen at the core.
       float ringR = mix(innerR, outerR, pow(shell, 0.48));
       ringR = mix(ringR, clamp(r * 0.72, innerR, outerR), 0.12);
       ringR = max(innerR, ringR * (1.0 - uAttractAge * 0.022));
@@ -190,19 +189,18 @@ const vertex = /* glsl */ `
       float omega = (2.0 + aSeed * 2.6) / pow(max(orbitR, 0.045), 0.48);
       omega *= (fract(aSeed * 1.37) > 0.5) ? 1.0 : -1.0;
 
-      float orbitTheta = mix(theta, phase, smoothstep(0.0, 0.35, localAttract));
+      float orbitTheta = mix(theta, orbitPhase, smoothstep(0.0, 0.35, localAttract));
       orbitTheta += omega * uAttractAge;
 
-      // Wobble grows toward the core — lanes weave and cross at the middle.
       float cross = (outerR / max(orbitR, 0.06)) * 0.016;
       float wobble =
         sin(orbitTheta * (2.0 + floor(aSeed * 4.0)) + uAttractAge * 1.6) * cross;
-      wobble += sin(orbitTheta * 3.0 - uAttractAge * 2.4 + phase) * cross * 0.55;
+      wobble += sin(orbitTheta * 3.0 - uAttractAge * 2.4 + orbitPhase) * cross * 0.55;
       wobble += sin(orbitTheta * 5.0 + uAttractAge * 0.9 + aSeed * 9.0) * cross * 0.3;
       orbitR = clamp(orbitR + wobble * localAttract, innerR, outerR);
 
       float ecc = 0.05 + fract(aSeed * 3.7) * 0.09;
-      orbitR = clamp(orbitR * (1.0 + ecc * cos(orbitTheta * 2.0 + phase) * localAttract), innerR, outerR);
+      orbitR = clamp(orbitR * (1.0 + ecc * cos(orbitTheta * 2.0 + orbitPhase) * localAttract), innerR, outerR);
 
       vec2 orbitPos = uCursor + orbitR * vec2(cos(orbitTheta), sin(orbitTheta));
       pos.xy = mix(pos.xy, orbitPos, smoothstep(0.04, 0.88, localAttract));
@@ -215,17 +213,21 @@ const vertex = /* glsl */ `
 
     float sizeMult = 1.0 + pushAmt * 1.2;
     sizeMult = mix(sizeMult, 1.05 + aSeed * 0.55, smoothstep(0.0, 0.7, localAttract));
-    gl_PointSize = max(2.2, aSize * uPixelRatio * sizeMult);
+    gl_PointSize = max(2.4, aSize * uPixelRatio * sizeMult * uSizeScale);
 
-    vColor = clusterColor(aCluster);
-    vAlpha = (0.22 + aSeed * 0.5) * (1.0 + pushAmt * 0.8);
-    vAlpha = mix(vAlpha, (0.48 + aSeed * 0.52), smoothstep(0.0, 0.55, localAttract));
+    vec3 base = clusterColor(aCluster);
+    vec3 tint = (uC0 + uC1 + uC2 + uC3) * 0.25;
+    vColor = mix(base, tint, uColorBleed) * uBrighten;
+    vAlpha = (0.24 + aSeed * 0.54) * (1.0 + pushAmt * 0.8);
+    vAlpha = mix(vAlpha, (0.52 + aSeed * 0.48), smoothstep(0.0, 0.55, localAttract));
+    vAlpha *= uAlphaScale;
     vAttract = localAttract;
   }
 `;
 
 const fragment = /* glsl */ `
   precision highp float;
+  uniform float uSoftEdge;
   varying vec3 vColor;
   varying float vAlpha;
   varying float vAttract;
@@ -233,31 +235,49 @@ const fragment = /* glsl */ `
   void main(){
     vec2 uv = gl_PointCoord - 0.5;
     float d = length(uv);
-    float edge = mix(0.5, 0.44, smoothstep(0.0, 0.75, vAttract));
+    float edge = mix(uSoftEdge, uSoftEdge - 0.06, smoothstep(0.0, 0.75, vAttract));
     float alpha = smoothstep(edge, 0.0, d) * vAlpha;
     if (alpha < 0.01) discard;
     vec3 col = vColor * (1.0 + vAttract * 0.55);
-    gl_FragColor = vec4(col, alpha);
+    gl_FragColor = vec4(col, min(alpha, 1.0));
   }
 `;
 
 export function LatentField({ theme, reducedMotion }: LatentFieldProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const programRef = useRef<Program | null>(null);
+  const glRef = useRef<WebGLRenderingContext | null>(null);
   const themeRef = useRef<Theme>(theme);
   const reducedRef = useRef<boolean>(reducedMotion);
 
   themeRef.current = theme;
   reducedRef.current = reducedMotion;
 
-  useEffect(() => {
-    const program = programRef.current;
-    if (!program) return;
-    const colors = clusterColors(theme);
+  const applyThemeUniforms = (program: Program, gl: WebGLRenderingContext, next: Theme) => {
+    const colors = clusterColors(next);
     program.uniforms.uC0.value = colors[0];
     program.uniforms.uC1.value = colors[1];
     program.uniforms.uC2.value = colors[2];
     program.uniforms.uC3.value = colors[3];
+    program.uniforms.uAlphaScale.value = next === 'light' ? 1.28 : 1.0;
+    program.uniforms.uBrighten.value = next === 'light' ? 0.96 : 1.0;
+    program.uniforms.uSizeScale.value = next === 'light' ? 1.12 : 1.0;
+    program.uniforms.uColorBleed.value = next === 'light' ? 0.18 : 0.0;
+    program.uniforms.uSoftEdge.value = next === 'light' ? 0.45 : 0.5;
+    if (next === 'light') {
+      // Normal alpha blend so saturated dots read as color on the white page.
+      program.setBlendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    } else {
+      // Additive glow on the dark page.
+      program.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
+    }
+  };
+
+  useEffect(() => {
+    const program = programRef.current;
+    const gl = glRef.current;
+    if (!program || !gl) return;
+    applyThemeUniforms(program, gl, theme);
   }, [theme]);
 
   useEffect(() => {
@@ -268,6 +288,7 @@ export function LatentField({ theme, reducedMotion }: LatentFieldProps) {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const renderer = new Renderer({ alpha: true, dpr, antialias: false, depth: false });
     const gl = renderer.gl;
+    glRef.current = gl;
     gl.clearColor(0, 0, 0, 0);
     container.appendChild(gl.canvas);
 
@@ -279,7 +300,9 @@ export function LatentField({ theme, reducedMotion }: LatentFieldProps) {
     const sizes = new Float32Array(count);
 
     const totalWeight = latentClusters.reduce((sum, c) => sum + c.weight, 0);
-    const spread = 0.17;
+    const spread = 0.22;
+    const inward = clusterInwardScale();
+    const ambientShare = 0.22;
 
     for (let i = 0; i < count; i++) {
       let r = Math.random() * totalWeight;
@@ -293,10 +316,15 @@ export function LatentField({ theme, reducedMotion }: LatentFieldProps) {
       }
       const c = latentClusters[ci];
 
-      const hx = c.center[0] + gaussian() * spread;
-      const hy = c.center[1] + gaussian() * spread;
-      positions[i * 3] = hx;
-      positions[i * 3 + 1] = hy;
+      if (Math.random() < ambientShare) {
+        const angle = Math.random() * Math.PI * 2;
+        const radius = Math.sqrt(Math.random()) * 0.62;
+        positions[i * 3] = Math.cos(angle) * radius * inward;
+        positions[i * 3 + 1] = Math.sin(angle) * radius * 0.92;
+      } else {
+        positions[i * 3] = c.center[0] * inward + gaussian() * spread;
+        positions[i * 3 + 1] = c.center[1] * inward + gaussian() * spread;
+      }
       positions[i * 3 + 2] = 0;
 
       targets[i * 3] = (Math.random() * 2 - 1) * 1.2;
@@ -330,12 +358,16 @@ export function LatentField({ theme, reducedMotion }: LatentFieldProps) {
         uPixelRatio: { value: dpr },
         uCursor: { value: [99, 99] },
         uCursorActive: { value: 0 },
-        uPull: { value: 0 },
         uAttract: { value: 0 },
         uAttractAge: { value: 0 },
         uVortexRadius: { value: coarse ? 0.66 : 0.62 },
         uPushRadius: { value: coarse ? 0.62 : 0.42 },
         uInteractScale: { value: coarse ? 1.45 : 1.0 },
+        uAlphaScale: { value: themeRef.current === 'light' ? 1.28 : 1.0 },
+        uBrighten: { value: themeRef.current === 'light' ? 0.96 : 1.0 },
+        uSizeScale: { value: themeRef.current === 'light' ? 1.12 : 1.0 },
+        uColorBleed: { value: themeRef.current === 'light' ? 0.18 : 0.0 },
+        uSoftEdge: { value: themeRef.current === 'light' ? 0.45 : 0.5 },
         uC0: { value: colors[0] },
         uC1: { value: colors[1] },
         uC2: { value: colors[2] },
@@ -343,6 +375,7 @@ export function LatentField({ theme, reducedMotion }: LatentFieldProps) {
       },
     });
     program.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
+    applyThemeUniforms(program, gl, themeRef.current);
     program.setBlendEquation(gl.FUNC_ADD, gl.FUNC_ADD);
     programRef.current = program;
 
@@ -364,7 +397,6 @@ export function LatentField({ theme, reducedMotion }: LatentFieldProps) {
     const hero = document.getElementById('hero');
     const cursorTarget = { x: 99, y: 99 };
     const cursorActive = { value: 0 };
-    const pull = { target: 0 };
     const attract = { target: 0 };
     let pointerDown = false;
     let capturedId = -1;
@@ -391,14 +423,7 @@ export function LatentField({ theme, reducedMotion }: LatentFieldProps) {
       return {
         x: aspect > 1 ? ndcX * aspect : ndcX,
         y: aspect > 1 ? ndcY : ndcY / aspect,
-        px,
       };
-    };
-
-    const updatePull = (px: number) => {
-      const contentHalf = Math.min(1152, width) / 2;
-      const over = Math.abs(px - width / 2) - contentHalf;
-      pull.target = Math.min(1, Math.max(0, over / Math.max(1, width * 0.16)));
     };
 
     const applyPointer = (clientX: number, clientY: number) => {
@@ -406,14 +431,12 @@ export function LatentField({ theme, reducedMotion }: LatentFieldProps) {
       if (!mapped) {
         if (!pointerDown) {
           cursorActive.value = 0;
-          pull.target = 0;
         }
         return;
       }
       cursorTarget.x = mapped.x;
       cursorTarget.y = mapped.y;
       cursorActive.value = 1;
-      updatePull(mapped.px);
     };
 
     const onHeroPointerDown = (e: PointerEvent) => {
@@ -429,7 +452,6 @@ export function LatentField({ theme, reducedMotion }: LatentFieldProps) {
       cursorTarget.x = mapped.x;
       cursorTarget.y = mapped.y;
       cursorActive.value = 1;
-      updatePull(mapped.px);
 
       if (scroll < 0.12) {
         if (coarse) {
@@ -481,7 +503,6 @@ export function LatentField({ theme, reducedMotion }: LatentFieldProps) {
     const onWindowPointerOut = () => {
       if (!pointerDown) {
         cursorActive.value = 0;
-        pull.target = 0;
       }
     };
 
@@ -521,7 +542,6 @@ export function LatentField({ theme, reducedMotion }: LatentFieldProps) {
     let curCursorY = 99;
     let curActive = 0;
     let curScroll = 0;
-    let curPull = 0;
     let curAttract = 0;
     let lastRenderT = 0;
     let lastFrameAt = performance.now();
@@ -540,7 +560,6 @@ export function LatentField({ theme, reducedMotion }: LatentFieldProps) {
       curCursorY += (cursorTarget.y - curCursorY) * activeEase;
       curActive += (cursorActive.value - curActive) * (coarse ? 0.14 : 0.08);
       curScroll += (scroll - curScroll) * 0.08;
-      curPull += (pull.target - curPull) * 0.07;
       curAttract += (attract.target - curAttract) * attractEase;
 
       if (curAttract > 0.04 || attract.target > 0) {
@@ -552,7 +571,6 @@ export function LatentField({ theme, reducedMotion }: LatentFieldProps) {
       program.uniforms.uCursor.value = [curCursorX, curCursorY];
       program.uniforms.uCursorActive.value = curActive;
       program.uniforms.uScroll.value = curScroll;
-      program.uniforms.uPull.value = curPull;
       program.uniforms.uAttract.value = curAttract;
       program.uniforms.uAttractAge.value = attractAge;
       renderer.render({ scene: mesh });

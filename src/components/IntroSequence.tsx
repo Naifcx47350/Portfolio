@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { introDuration } from '../lib/animations';
 import type { TranslationKeys } from '../data/i18n';
 import type { Theme } from '../hooks/useTheme';
-import { publicAssetUrl } from '../lib/assets';
+import { brandLogoUrl } from '../lib/assets';
 
 const SESSION_KEY = 'portfolio-intro-seen';
 
@@ -76,7 +76,7 @@ export function IntroSequence({ onComplete, reducedMotion, theme, t }: IntroSequ
           0.15
         )
         .to(lineRef.current, { scaleX: 1, duration: 0.55 }, 0.75)
-        .to(nameRef.current, { clipPath: 'inset(0 0% 0 0)', duration: 0.75 }, 1.0)
+        .to(nameRef.current, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.75 }, 1.0)
         .fromTo(
           roleRef.current,
           { y: 24, autoAlpha: 0 },
@@ -113,7 +113,7 @@ export function IntroSequence({ onComplete, reducedMotion, theme, t }: IntroSequ
 
   if (alreadySeen || reducedMotion) return null;
 
-  const logoSrc = publicAssetUrl(`brand/logo-${theme === 'dark' ? 'dark' : 'light'}.png`);
+  const logoSrc = brandLogoUrl(theme);
 
   return (
     <div
@@ -146,23 +146,23 @@ export function IntroSequence({ onComplete, reducedMotion, theme, t }: IntroSequ
         aria-hidden="true"
       />
 
-      <div className="section-container relative flex max-w-3xl flex-col items-center gap-6 text-center sm:items-start sm:text-start">
+      <div className="section-container relative flex max-w-3xl flex-col items-center gap-6 text-center">
         <img
           ref={logoRef}
           src={logoSrc}
           alt=""
-          width={72}
-          height={72}
-          className="size-16 opacity-0 sm:size-[4.5rem]"
+          width={128}
+          height={128}
+          className="size-24 opacity-0 sm:size-32"
           aria-hidden="true"
         />
         <div
           ref={lineRef}
-          className="intro-line h-px w-full max-w-xs bg-accent sm:max-w-sm"
+          className="intro-line intro-line-center h-px w-full max-w-xs bg-accent sm:max-w-sm"
         />
         <h1
           ref={nameRef}
-          className="intro-name-mask font-display text-4xl font-bold tracking-tight text-primary sm:text-6xl"
+          className="intro-name-mask intro-name-center font-display text-4xl font-bold tracking-tight text-primary sm:text-6xl"
         >
           {p.name}
         </h1>

@@ -3,6 +3,7 @@ import { Menu, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { navSections } from '../data/sections';
 import type { SectionId } from '../data/sections';
+import { brandLogoUrl } from '../lib/assets';
 import { LiveClock } from './LiveClock';
 import { ThemeToggle } from './ThemeToggle';
 import { LocaleToggle } from './LocaleToggle';
@@ -51,17 +52,16 @@ export function Nav({
         <div className="flex min-w-0 items-center gap-5 md:gap-8 lg:gap-10">
           <a
             href="#hero"
-            className="flex shrink-0 items-center ps-1"
+            className="group flex shrink-0 items-center ps-1"
             aria-label={`${t.profile.name} — home`}
           >
             <img
-              src={`${import.meta.env.BASE_URL}brand/${
-                theme === 'dark' ? 'logo-dark' : 'logo-light'
-              }.png`}
+              key={theme}
+              src={brandLogoUrl(theme)}
               alt="Naif Alsahabi logo"
-              width={32}
-              height={38}
-              className="h-9 w-auto select-none transition-[opacity,transform] duration-200"
+              width={48}
+              height={48}
+              className="h-11 w-11 select-none transition-[opacity,transform] duration-200 group-hover:scale-105 sm:h-12 sm:w-12"
               draggable={false}
             />
           </a>

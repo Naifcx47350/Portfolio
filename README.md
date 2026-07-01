@@ -2,14 +2,17 @@
 
 Personal portfolio for an AI Engineer: projects, skills, certifications, and contact — built with React, Vite, TypeScript, Tailwind CSS, and a custom WebGL particle field.
 
-**Live site:** [naifcx47350.github.io/Portfolio](https://naifcx47350.github.io/Portfolio/) · **v1.2**
+**Live site:** [naifcx47350.github.io/Portfolio](https://naifcx47350.github.io/Portfolio/) · **v1.3**
 
 ![Portfolio screenshot](./docs/screenshot.png)
 
-## Highlights (v1.2)
+## Highlights (v1.3)
 
+- **Two distinct themes** — a bold charcoal/red dark mode and a separate airy white/blue light mode (not an inversion); each with its own particle palette, logo, and portrait
+- **Theme-aware transparent branding** — logos are true-transparent PNGs served per theme, so no background box in either mode
 - **Hero latent-space field** — GPU particle cloud (WebGL/OGL) seeded from real projects; warps toward the cursor outside the content column; hold-click vortex capture with orbital motion
-- **About portrait frame** — HUD-style interactive frame with 3D tilt, cursor sheen, and scan reveal
+- **Cinematic intro** — centered logo/name reveal on all viewports; the hero code block types out only after the intro finishes
+- **About portrait frame** — HUD-style interactive frame with 3D tilt, cursor sheen, and (dark-mode) scan reveal
 - **Interactive Skills constellation** — full-color brand logos as nodes, animated links, tap-to-reveal descriptions; Graph and List views
 - **Confidential projects** — KACST-internal work shown with title, description, and early-stage previews only (no repo/live links; badge on card and modal)
 - **Project image lightbox** — click screenshots in the detail modal to expand; arrow-key navigation for galleries
@@ -35,18 +38,19 @@ Personal portfolio for an AI Engineer: projects, skills, certifications, and con
 Portfolio/
 ├── public/                 # Static assets
 │   ├── brand/
+│   │   ├── dark/           # logo-dark.png (transparent)
+│   │   └── light/          # logo-light.png (transparent)
+│   ├── profile/
+│   │   ├── dark/           # portrait.png
+│   │   └── light/          # portrait.png
 │   ├── Certifaction/
 │   ├── Screenshots/
-│   ├── profile/
 │   └── resume.pdf
+├── scripts/
+│   └── make-logo-transparent.mjs   # keys out logo backgrounds → transparent PNGs
 ├── src/
-<<<<<<< Updated upstream
-│   ├── components/         # UI (Hero, Skills, Projects, …)
-│   ├── data/               # Content
-=======
 │   ├── components/
 │   ├── data/
->>>>>>> Stashed changes
 │   ├── hooks/
 │   ├── lib/
 │   └── styles/

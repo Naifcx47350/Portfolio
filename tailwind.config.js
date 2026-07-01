@@ -21,7 +21,7 @@ export default {
       },
       boxShadow: {
         glow: '0 0 40px var(--accent-glow)',
-        card: '0 4px 24px rgba(0, 0, 0, 0.25)',
+        card: 'var(--shadow-card)',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out forwards',

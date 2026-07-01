@@ -34,6 +34,19 @@ function cssVar(name: string, fallback: string): string {
   return v || fallback;
 }
 
+const THEME_FALLBACK = {
+  dark: { line: '#A1A1A6', accent: '#E0322B' },
+  light: { line: '#5A7494', accent: '#2B9FEF' },
+} as const;
+
+function themeColors(theme: Theme) {
+  const fb = THEME_FALLBACK[theme];
+  return {
+    line: cssVar('--text-muted', fb.line),
+    accent: cssVar('--accent', fb.accent),
+  };
+}
+
 export function SkillConstellation({
   reducedMotion,
   theme,
@@ -98,10 +111,7 @@ export function SkillConstellation({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let colors = {
-      line: cssVar('--text-muted', '#A1A1A6'),
-      accent: cssVar('--accent', '#E0322B'),
-    };
+    let colors = themeColors(theme);
 
     let width = 1;
     let height = 1;
@@ -177,6 +187,8 @@ export function SkillConstellation({
     };
 
     const draw = () => {
+      // Re-read each frame so toggling theme updates link colors immediately.
+      colors = themeColors(theme);
       ctx.clearRect(0, 0, width, height);
       for (const [a, b] of links) {
         const lit = isLit(a, b);
@@ -243,15 +255,9 @@ export function SkillConstellation({
       raf = requestAnimationFrame(loop);
     }
 
-    // React to theme changes (CSS vars) without rebuilding.
-    const themeColors = () => {
-      colors = {
-        line: cssVar('--text-muted', '#A1A1A6'),
-        accent: cssVar('--accent', '#E0322B'),
-      };
-      draw();
-    };
-    themeColors();
+    // Sync once on mount / theme change (reduced-motion path has no animation loop).
+    colors = themeColors(theme);
+    draw();
 
     return () => {
       cancelAnimationFrame(raf);

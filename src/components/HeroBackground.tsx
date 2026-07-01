@@ -4,7 +4,7 @@ interface HeroBackgroundProps {
   disabled?: boolean;
 }
 
-/** Soft red radial glow only — particles layer sits on top. */
+/** Soft radial glow under the particle field — color follows theme accent. */
 export function HeroBackground({ disabled = false }: HeroBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef(0);
