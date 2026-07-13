@@ -7,7 +7,7 @@ const CODE_LINES: { text: string; className: string }[] = [
   { text: '  based: "Riyadh, SA",', className: 'code-str' },
   { text: '  focus: ["LLMs & RAG", "Computer Vision", "NLP"],', className: 'code-arr' },
   { text: '  building: "end-to-end, bilingual AI systems",', className: 'code-str' },
-  { text: '  currently: "SDA AI Engineering Bootcamp",', className: 'code-str' },
+  { text: '  latest: "SDA AI Engineering · Graduate",', className: 'code-str' },
   { text: '};', className: 'code-kw' },
   { text: '', className: '' },
   { text: 'function buildWithNaif() {', className: 'code-kw' },

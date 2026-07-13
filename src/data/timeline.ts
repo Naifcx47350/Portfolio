@@ -11,7 +11,7 @@ export const timeline: Record<Locale, TimelineEntry[]> = {
   en: [
     {
       year: '2026',
-      title: 'SDA AI Engineering Bootcamp',
+      title: 'SDA AI Engineering Bootcamp · Graduate',
       org: 'Saudi Digital Academy',
       detail: 'Applied systems, deployment workflows, production-oriented delivery.',
     },
@@ -41,7 +41,7 @@ export const timeline: Record<Locale, TimelineEntry[]> = {
   ar: [
     {
       year: '2026',
-      title: 'معسكر SDA AI Engineering',
+      title: 'معسكر SDA AI Engineering · خريج',
       org: 'الأكاديمية السعودية الرقمية',
       detail: 'أنظمة تطبيقية، سير عمل النشر، وتسليم موجه للإنتاج.',
     },

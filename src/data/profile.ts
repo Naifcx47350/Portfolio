@@ -10,14 +10,14 @@ export const profile = {
   resumeUrl: "/resume.pdf",
   about: [
     "I'm an Artificial Intelligence graduate from Imam Abdulrahman Bin Faisal University. My work focuses on turning models, data, and ideas into working tools: LLM and RAG applications, computer vision systems, NLP pipelines, and data-driven dashboards.",
-    "I'm currently sharpening my AI engineering through the SDA AI Engineering bootcamp, with more focus on applied systems, deployment workflows, and production-oriented delivery. I enjoy building things that can actually be tested, shipped, and used."
+    "I recently graduated from the SDA AI Engineering bootcamp at Saudi Digital Academy, with a stronger focus on applied systems, deployment workflows, and production-oriented delivery. I enjoy building things that can actually be tested, shipped, and used."
   ],
   education: {
     degree: "B.S. in Artificial Intelligence",
     school: "Imam Abdulrahman Bin Faisal University (IAU)",
     gpa: "4.52 / 5.0",
     graduated: "August 2025",
-    bootcamp: "SDA AI Engineering Bootcamp (Saudi Digital Academy), 2026"
+    bootcamp: "SDA AI Engineering Bootcamp — Saudi Digital Academy, 2026"
   },
   contact: {
     successMessage: "Message sent. I'll get back to you soon.",

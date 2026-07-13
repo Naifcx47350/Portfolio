@@ -87,7 +87,7 @@ export function About({ reducedMotion, locale, t }: AboutProps) {
                   </div>
                 </div>
                 <div className="border-t border-border pt-4">
-                  <dt className="font-mono text-xs uppercase tracking-wider text-accent">{a.current}</dt>
+                  <dt className="font-mono text-xs uppercase tracking-wider text-accent">{a.latestProgram}</dt>
                   <dd className="mt-1 text-primary">{p.education.bootcamp}</dd>
                 </div>
               </dl>

@@ -28,7 +28,7 @@ const en = {
     university: 'University',
     gpa: 'GPA',
     graduated: 'Graduated',
-    current: 'Current',
+    latestProgram: 'Latest completed program',
     timelineTitle: 'Experience & milestones',
     focusTitle: 'Focus areas',
     location: 'Based in',
@@ -98,12 +98,12 @@ const en = {
     focusAreas: ['Machine Learning', 'LLMs & RAG', 'Computer Vision', 'NLP'],
     about: [
       "I'm an Artificial Intelligence graduate from Imam Abdulrahman Bin Faisal University. My work focuses on turning models, data, and ideas into working tools: LLM and RAG applications, computer vision systems, NLP pipelines, and data-driven dashboards.",
-      "I'm currently sharpening my AI engineering through the SDA AI Engineering bootcamp, with more focus on applied systems, deployment workflows, and production-oriented delivery. I enjoy building things that can actually be tested, shipped, and used.",
+      "I recently graduated from the SDA AI Engineering bootcamp at Saudi Digital Academy, with a stronger focus on applied systems, deployment workflows, and production-oriented delivery. I enjoy building things that can actually be tested, shipped, and used.",
     ],
     education: {
       degree: 'B.S. in Artificial Intelligence',
       school: 'Imam Abdulrahman Bin Faisal University (IAU)',
-      bootcamp: 'SDA AI Engineering Bootcamp (Saudi Digital Academy), 2026',
+      bootcamp: 'SDA AI Engineering Bootcamp — Saudi Digital Academy, 2026',
       graduated: 'August 2025',
     },
     contact: {
@@ -140,7 +140,7 @@ const ar: TranslationKeys = {
     university: 'الجامعة',
     gpa: 'المعدل',
     graduated: 'التخرج',
-    current: 'حالياً',
+    latestProgram: 'آخر برنامج مكتمل',
     timelineTitle: 'المسار والمحطات',
     focusTitle: 'Focus areas',
     location: 'الموقع',
@@ -210,12 +210,12 @@ const ar: TranslationKeys = {
     focusAreas: ['Machine Learning', 'LLMs & RAG', 'Computer Vision', 'NLP'],
     about: [
       'أنا خريج ذكاء اصطناعي من جامعة الإمام عبدالرحمن بن فيصل. أركز في عملي على تحويل النماذج والبيانات إلى أدوات حقيقية: تطبيقات LLM وRAG، أنظمة رؤية حاسوبية، خطوط معالجة NLP، ولوحات بيانات تفاعلية.',
-      'أطوّر مهاراتي حالياً في معسكر SDA AI Engineering بالأكاديمية السعودية الرقمية، مع تركيز أكبر على الأنظمة التطبيقية، وسير عمل النشر، والتسليم الجاهز للإنتاج. أستمتع ببناء ما يمكن اختباره وإطلاقه واستخدامه فعلياً.',
+      'تخرّجت مؤخراً من معسكر SDA AI Engineering بالأكاديمية السعودية الرقمية، مع تركيز أقوى على الأنظمة التطبيقية، وسير عمل النشر، والتسليم الجاهز للإنتاج. أستمتع ببناء ما يمكن اختباره وإطلاقه واستخدامه فعلياً.',
     ],
     education: {
       degree: 'بكالوريوس في الذكاء الاصطناعي',
       school: 'جامعة الإمام عبدالرحمن بن فيصل (IAU)',
-      bootcamp: 'معسكر SDA AI Engineering، الأكاديمية السعودية الرقمية 2026',
+      bootcamp: 'معسكر SDA AI Engineering — الأكاديمية السعودية الرقمية، 2026',
       graduated: 'أغسطس 2025',
     },
     contact: {
