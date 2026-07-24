@@ -8,7 +8,7 @@ Personal portfolio for an AI Engineer: projects, skills, certifications, and con
 
 ## Highlights (v1.3)
 
-- **Two distinct themes** — a bold charcoal/red dark mode and a separate airy white/blue light mode (not an inversion); each with its own particle palette, logo, and portrait
+- **Two distinct themes** — a bold charcoal/red dark mode and a separate airy white/blue light mode; each with its own particle palette, logo, and portrait
 - **Theme-aware transparent branding** — logos are true-transparent PNGs served per theme, so no background box in either mode
 - **Hero latent-space field** — GPU particle cloud (WebGL/OGL) seeded from real projects; warps toward the cursor outside the content column; hold-click vortex capture with orbital motion
 - **Cinematic intro** — centered logo/name reveal on all viewports; the hero code block types out only after the intro finishes
