@@ -1,5 +1,6 @@
-// `pdf`  → path under public/Certifaction/ (e.g. "Nvidia/my-cert.pdf")
-// `image` → optional PNG scan under public/certs/ (used when no pdf is set)
+// `pdf`   → path under public/Certifaction/ (e.g. "Nvidia/my-cert.pdf")
+// `image` → optional PNG override under public/certs/; if omitted, the modal
+//           uses the PNG generated from `pdf` via `npm run certs:previews`
 export type Cert = {
   name: string;
   issuer: string;

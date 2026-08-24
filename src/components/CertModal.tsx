@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ExternalLink, X } from 'lucide-react';
 import type { Cert } from '../data/certifications';
 import type { TranslationKeys } from '../data/i18n';
-import { certPdfUrl, publicAssetUrl } from '../lib/assets';
+import { certPdfUrl, certPreviewUrl, publicAssetUrl } from '../lib/assets';
 import { CertPdfPreview } from './CertPdfPreview';
 
 interface CertModalProps {
@@ -64,7 +64,9 @@ export function CertModal({ cert, onClose, reducedMotion, t }: CertModalProps) {
 
   const duration = reducedMotion ? 0.01 : 0.2;
   const pdfUrl = cert?.pdf ? certPdfUrl(cert.pdf) : null;
-  const imageUrl = cert?.image ? publicAssetUrl(`certs/${cert.image}`) : null;
+  let imageUrl: string | null = null;
+  if (cert?.image) imageUrl = publicAssetUrl(`certs/${cert.image}`);
+  else if (cert?.pdf) imageUrl = certPreviewUrl(cert.pdf);
 
   return createPortal(
     <AnimatePresence>
@@ -102,25 +104,12 @@ export function CertModal({ cert, onClose, reducedMotion, t }: CertModalProps) {
             </button>
 
             <div className="pe-8">
-              {pdfUrl && (
-                <CertPdfPreview
-                  url={pdfUrl}
-                  title={`${cert.name} certificate`}
-                  openPdfLabel={c.openPdf}
-                />
-              )}
-
-              {!pdfUrl && imageUrl && (
-                <figure className="mb-6 overflow-hidden rounded-md border border-border bg-elevated">
-                  <div className="bg-surface p-4">
-                    <img
-                      src={imageUrl}
-                      alt={`${cert.name} certificate`}
-                      className="mx-auto max-h-[55vh] w-auto rounded-sm object-contain"
-                    />
-                  </div>
-                </figure>
-              )}
+              <CertPdfPreview
+                imageUrl={imageUrl}
+                pdfUrl={pdfUrl}
+                title={`${cert.name} certificate`}
+                openPdfLabel={c.openPdf}
+              />
 
               <p className="section-eyebrow">{cert.issuer}</p>
               <h3 className="mt-2 font-display text-2xl font-semibold text-primary">

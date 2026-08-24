@@ -50,10 +50,12 @@ Portfolio/
 │   ├── profile/
 │   │   ├── dark/           # portrait.png
 │   │   └── light/          # portrait.png
-│   ├── Certifaction/
+│   ├── Certifaction/       # original certificate PDFs
+│   ├── certs/              # first-page PNG previews (`npm run certs:previews`)
 │   ├── Screenshots/
 │   └── resume.pdf
 ├── scripts/
+│   ├── export-cert-previews.mjs    # PDF page 1 → public/certs/*.png
 │   └── make-logo-transparent.mjs   # keys out logo backgrounds → transparent PNGs
 ├── src/
 │   ├── components/
